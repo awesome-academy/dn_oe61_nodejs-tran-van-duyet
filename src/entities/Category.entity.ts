@@ -41,7 +41,6 @@ export class Category {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // Optional: Quan hệ với bảng Users (nếu bạn muốn truy xuất User object)
   @ManyToOne(() => User)
   @JoinColumn({ name: 'created_by' })
   createdByUser: User;

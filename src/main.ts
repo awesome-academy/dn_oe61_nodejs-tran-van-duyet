@@ -9,8 +9,6 @@ import * as session from 'express-session';
 import { I18nMiddleware, I18nValidationPipe } from 'nestjs-i18n';
 import { ValidationPipe } from '@nestjs/common';
 
-
-
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cookieParser());
@@ -70,6 +68,7 @@ async function bootstrap() {
           }
           return result;
         },
+        safe: (value) => value || ''
       },
     }),
   );

@@ -128,22 +128,7 @@
 
 <nav aria-label="User pagination" class="mt-4">
     <ul class="pagination justify-content-center" id="paginationWrapper">
-        {{#if (gt currentPage 1)}}
-        <li class="page-item">
-            <a class="page-link" href="?page={{dec currentPage}}&limit={{limit}}">Previous</a>
-        </li>
-        {{/if}}
-
-        {{#each (range 1 totalPages)}}
-        <li class="page-item {{#if (eq this ../currentPage)}}active{{/if}}">
-            <a class="page-link" href="?page={{this}}&limit={{../limit}}">{{this}}</a>
-        </li>
-        {{/each}}
-
-        {{#if (lt currentPage totalPages)}}
-        <li class="page-item">
-            <a class="page-link" href="?page={{inc currentPage}}&limit={{limit}}">Next</a>
-        </li>
-        {{/if}}
+        
     </ul>
 </nav>
+<script src="/js/modal-form-user.js"></script>

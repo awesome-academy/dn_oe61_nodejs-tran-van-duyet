@@ -1,0 +1,10 @@
+<input type="hidden" name="created_by" value="{{user.id}}">
+<label for="name" class="form-label">{{t.name}}</label>
+<input type="text" class="form-control" id="{{prefix}}name" name="name" required>
+<label for="type" class="form-label mt-2">{{t.type}}</label>
+<select name="type" id="{{prefix}}type" class="form-select">
+    <option value="0">{{t.exp}}</option>
+    <option value="1">{{t.inc}}</option>
+</select>
+<label for="description" class="form-label mt-2">{{t.desc}}</label>
+<input type="text" class="form-control" id="{{prefix}}description" name="description">
