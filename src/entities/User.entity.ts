@@ -13,6 +13,7 @@ import { Role } from './Role.entity';
 import { BudgetUser } from './BudgetUser.entity';
 import { CategoryUser } from './CategoryUser.entity';
 import { GoalUser } from './GoalUser.entity';
+import { Plan } from './Plan.entity'; 
 
 @Entity({ name: 'users' })
 export class User {
@@ -28,8 +29,14 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   name: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  phone: string;
+
   @Column({ type: 'text', nullable: true })
   description: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  avatar: string;
 
   @Column({ type: 'varchar', nullable: true })
   registration_token: string;
@@ -69,4 +76,8 @@ export class User {
   @OneToMany(() => GoalUser, (gu) => gu.user)
   goalUsers: GoalUser[];
 
+  @ManyToOne(() => Plan)
+  @JoinColumn({ name: 'plan_id' })
+  plan: Plan;
 }
+

@@ -1,4 +1,3 @@
-// src/config/database.config.ts
 
 export default () => ({
   database: {
@@ -8,5 +7,9 @@ export default () => ({
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     name: process.env.DB_NAME,
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production',
+    expiresIn: process.env.JWT_EXPIRES_IN || '1d',
   },
 });

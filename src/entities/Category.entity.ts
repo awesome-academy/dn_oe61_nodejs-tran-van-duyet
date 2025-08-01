@@ -32,7 +32,7 @@ export class Category {
   @Column({ type: 'int' })
   created_by: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true  })
   updated_by: number;
 
   @CreateDateColumn()
