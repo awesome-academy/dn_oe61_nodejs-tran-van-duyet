@@ -55,9 +55,7 @@ export class AuthController {
     const { email, password } = body;
     const t = i18n.t('auth') as any;
     const user = await this.authService.validateUser(email, password);
-    if (!user) {
-      return res.status(401).json({ message: t.wrongPassword });
-    }
+    
 
     const jwt = await this.authService.login(user);
     res.cookie('admin_token', jwt.admin_token, {
