@@ -1,0 +1,29 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>My NestJS App</title>
+    <!-- Bootstrap CSS cục bộ -->
+    <link rel='stylesheet' href='/css/bootstrap.min.css' />
+    <!-- Custom CSS -->
+    <link rel='stylesheet' href='/styles.css' />
+    <link rel='stylesheet' href='/fontawesome/css/all.min.css' />
+    <link rel='stylesheet' href='/css/toastr.min.css' />
+  </head>
+  <script src='/js/jquery.min.js'></script>
+  <script src='/js/toastr.min.js'></script>
+  <body
+    data-message='{{message}}'
+    data-message-type='{{messageType}}'
+  >
+  <div class="text-end me-2">
+    <a href="?lang=vi">🇻🇳 Vietnamese</a> |
+    <a href="?lang=en">🇬🇧 English</a>
+  </div>
+    {{{body}}}
+
+    <script src='/js/toastr-handler.js'></script>
+    <script src='/js/bootstrap.bundle.min.js'></script>
+    <script src="/js/login.js"></script>
+  </body>
+</html>

@@ -9,8 +9,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+    <link rel='stylesheet' href='/css/toastr.min.css' />
 </head>
-<body>
+<script src='/js/jquery.min.js'></script>
+<script src='/js/toastr.min.js'></script>
+<body data-message='{{message}}' data-message-type='{{messageType}}'>
     <!-- Top (Header) -->
     {{> top }}
 
@@ -27,5 +30,6 @@
 
     <!-- Bootstrap JS cục bộ -->
     <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src='/js/toastr-handler.js'></script>
 </body>
 </html>

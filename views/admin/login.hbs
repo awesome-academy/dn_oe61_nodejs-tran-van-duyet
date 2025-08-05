@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-center align-items-center" style="margin-top: 25vh;">
+  <div class="card shadow-lg border-0" style="width: 100%; max-width: 500px;">
+    <div class="card-header text-center bg-primary text-white">
+      <h3 class="mb-0">{{t.LOGIN_TITLE}}</h3>
+    </div>
+    <form id="loginForm" method="post" action="/auth/login">
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="email" class="form-label">{{t.EMAIL_LABEL}}</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              required
+              placeholder="{{t.EMAIL_PLACEHOLDER}}"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">{{t.PASSWORD_LABEL}}</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              required
+              placeholder="{{t.PASSWORD_PLACEHOLDER}}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end bg-white">
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="fa-solid fa-right-to-bracket me-2"></i>{{t.LOGIN_BUTTON}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
