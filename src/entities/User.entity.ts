@@ -39,7 +39,7 @@ export class User {
   avatar: string;
 
   @Column({ type: 'varchar', nullable: true })
-  registration_token: string;
+  registration_token: string | null;
 
   @Column({ type: 'varchar', nullable: true })
   password_token: string;

@@ -12,6 +12,8 @@ import { JwtModule } from '@nestjs/jwt';
 import * as path from 'path';
 import { AcceptLanguageResolver, CookieResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { LanguageMiddleware } from './common/middleware/language.middleware';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 @Module({
   imports: [
     ConfigModule.forRoot({ 
@@ -48,6 +50,32 @@ import { LanguageMiddleware } from './common/middleware/language.middleware';
         new CookieResolver(),
         AcceptLanguageResolver,
       ],
+    }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false,
+          auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASSWORD,
+          },
+        },
+        defaults: {
+          from: '"personal spending management" <modules@nestjs.com>',
+        },
+        template: {
+          dir: __dirname + '/mail/templates',
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
+      
     }),
     UsersModule,
     CategoryModule,
