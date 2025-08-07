@@ -11,6 +11,12 @@ export class PlanService {
     ) {}
 
     async findAll(): Promise<Plan[]> {
-        return this.plansRepository.find();
+        return await this.plansRepository.find();
+    }
+
+    async findOne(id: number): Promise<Plan | null> {
+        return await this.plansRepository.findOne({
+            where: { id },
+        });
     }
 }

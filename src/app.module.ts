@@ -18,6 +18,7 @@ import { PlanService } from './module/plan/plan.service';
 import { PlanModule } from './module/plan/plan.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { PostModule } from './module/post/post.module';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     AuthModule,
     RoleModule,
     PlanModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
