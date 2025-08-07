@@ -1,16 +1,23 @@
-import { Controller, Get, Post, Res, Body, Req } from '@nestjs/common';
+import { Controller, Get, Post, Res, Body, Req, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { jwtConstants } from '../auth/constants';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { I18n, I18nContext } from 'nestjs-i18n';
+import { MailerService } from '@nestjs-modules/mailer';
+import { CreateAuthDto } from './dto/create-auth.dto';
+import { UsersService } from '../user/users.service';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
+    private usersService: UsersService,
     private jwtService: JwtService,
+    private readonly mailerService: MailerService
   ) {}
 
   @Get('admin/login')
@@ -69,5 +76,36 @@ export class AuthController {
     const t = i18n.t('auth') as any;
     req.session.message = t.messageLogout;
     return res.redirect('/auth/admin/login');
+  }
+
+  @Post('register')
+  async register(@Body() CreateUserDto: CreateUserDto, @I18n() i18n: I18nContext){
+    const t = i18n.t('auth') as any;
+    if (CreateUserDto.encrypted_password !== CreateUserDto.repassword) {
+      return {
+        message: t.confirm_password
+      };
+    }
+    const existingUser = await this.usersService.findByEmail(CreateUserDto.email);
+    if (existingUser) {
+      return {
+        message: t.Check_email
+      };
+    }
+    const user = await this.usersService.register(CreateUserDto);
+    return {
+      message: t.REGISTER_SUCCESS,
+      userId: user.id,
+    };
+  }
+
+  @Post('activate')
+  async activate(@Body() body, @I18n() i18n: I18nContext) {
+    const t = i18n.t('auth') as any;
+    const user = await this.usersService.activateAccount(body.token);
+    return {
+      message: t.activated,
+      user,
+    };
   }
 }
