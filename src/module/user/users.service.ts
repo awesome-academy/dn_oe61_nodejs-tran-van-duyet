@@ -26,14 +26,16 @@ export class UsersService {
   }
 
   async create(createUserDto: Partial<UpdateUserDto>) {
+    const { encrypted_password, ...rest } = createUserDto;
     const existing = await this.usersRepository.findOne({
       where: { email: createUserDto.email },
     });
     if (existing) {
       return false;
     }
+    const hashedPassword = await bcrypt.hash(encrypted_password, 10);
     
-    const user = this.usersRepository.create(createUserDto);
+    const user = this.usersRepository.create({...rest, encrypted_password: hashedPassword});
     return this.usersRepository.save(user);
   }
 
@@ -67,8 +69,10 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
+    const { encrypted_password, ...rest } = updateUserDto;
+    const hashedPassword = await bcrypt.hash(encrypted_password, 10);
 
-    await this.usersRepository.update(id, updateUserDto);
+    await this.usersRepository.update(id, {...rest, encrypted_password: hashedPassword});
     return this.usersRepository.findOne({ where: { id } });
   }
 

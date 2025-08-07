@@ -56,16 +56,45 @@ export class AuthController {
     const t = i18n.t('auth') as any;
     const user = await this.authService.validateUser(email, password);
     
+    if (user !== null && user.role_id === 1) {
+      const jwt = await this.authService.login(user);
+      res.cookie('admin_token', jwt.admin_token, {
+        httpOnly: true, // Do not allow JS access (anti-XSS)
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        sameSite: 'lax', // GReducing CSRF Risk
+        // secure: true,             // Enable if you use HTTPS
+      });
+      req.session.message = t.messageLogin;
+      return res.status(200).json({});
+    } else {
+      return res.status(401).json({
+        message: t.wrongPassword,
+      });
+    }
+    
+  }
 
-    const jwt = await this.authService.login(user);
-    res.cookie('admin_token', jwt.admin_token, {
-      httpOnly: true, // Do not allow JS access (anti-XSS)
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      sameSite: 'lax', // GReducing CSRF Risk
-      // secure: true,             // Enable if you use HTTPS
-    });
-    req.session.message = t.messageLogin;
-    return res.status(200).json({});
+  @Post('user/login')
+  async loginUser(@Body() body, @Res() res: Response, @Req() req: Request, @I18n() i18n: I18nContext) {
+    
+    const { email, password } = body;
+    const t = i18n.t('auth') as any;
+    const user = await this.authService.validateUser(email, password);
+    
+    if (user === null) {
+      return res.status(401).json({ status: 0, message: t.wrongPassword });
+    } else if ( user.status === 1 ) {
+      const jwt = await this.authService.loginUser(user);
+      res.cookie('user_token', jwt.user_token, {
+        httpOnly: true, // Do not allow JS access (anti-XSS)
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        sameSite: 'lax', // GReducing CSRF Risk
+        // secure: true,             // Enable if you use HTTPS
+      });
+      return res.status(200).json({ message: t.messageLogin });
+    } else {
+      return res.status(401).json({ message: t.check_activate });
+    } 
   }
 
   @Get('logout')
@@ -74,6 +103,13 @@ export class AuthController {
     const t = i18n.t('auth') as any;
     req.session.message = t.messageLogout;
     return res.redirect('/auth/admin/login');
+  }
+
+  @Get('logout/user')
+  logoutUser(@Res() res: Response, @I18n() i18n: I18nContext) {
+    res.clearCookie('user_token');
+    const t = i18n.t('auth') as any;
+    return res.status(200).json({ message: t.messageLogout });
   }
 
   @Post('register')
