@@ -1,1 +1,112 @@
-<h1>{{ categories }}</h1>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>{{t.c_title}}</h3>
+            </div>
+            <form class="ajax-form" data-url="" method="POST">
+                <div class="card-body">
+                        <div class="mb-3">
+                            {{> categoryFromFields prefix=""}}
+                        </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn-primary">{{t.submit}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>{{t.l_title}}</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th>#</th>
+                            <th>{{t.name}}</th>
+                            <th>{{t.type}}</th>
+                            <th>{{t.desc}}</th>
+                            <th>{{t.act}}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categoryTableBody">
+                        {{#each categories}}
+                        <tr>
+                            <td class="text-center align-middle">{{ inc @index }}</td>
+                            <td class="text-center align-middle">{{name}}</td>
+                            <td class="text-center align-middle">
+                                {{#if type}}
+                                    <button type="button" class="btn btn-success">{{../t.inc}}</button>
+                                {{else}}
+                                    <button type="button" class="btn btn-secondary">{{../t.exp}}</button>
+                                {{/if}}</td>
+                            <td class="align-middle">{{safe description}}</td>
+                            <td class="text-center align-middle">
+                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#edit"
+                                data-id="{{id}}"
+                                data-name = "{{name}}"
+                                data-type = "{{type}}"
+                                data-description = "{{description}}"
+                                >{{../t.edit}}</button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">{{../t.del}}</button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <nav aria-label="Category pagination" class="mt-4">
+                <ul class="pagination justify-content-center" id="paginationWrapper">
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- Modal edit -->
+    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-form" data-url="/category" data-method="PUT">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{t.editTitle}}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="edit-id">
+                        {{> categoryFromFields prefix="edit-"}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{t.close}}</button>
+                        <button type="submit" class="btn btn-primary">{{t.saveChanges}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Xoa -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <form class="modal-form" data-url="" data-method="DELETE">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">{{t.deleteTitle}}</h5>
+                    </div>
+                    <div class="modal-body">
+                    <input type="hidden" id="deleteUserModal-id" name="id">
+                    <p>{{t.deleteConfirm}}</p>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{t.close}}</button>
+                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">{{t.delete}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/js/modal-form-category.js"></script>
