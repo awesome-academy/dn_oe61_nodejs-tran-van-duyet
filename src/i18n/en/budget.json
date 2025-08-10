@@ -1,0 +1,17 @@
+{
+  "create_success": "Budget created successfully.",
+  "create_error": "The budget already exists.",
+  "update_success": "Budget updated successfully.",
+  "update_error": "Budget for this category already exists.",
+  "update_failed": "Update failed",
+  "delete_success": "Budget deleted successfully.",
+  "delete_error": "Failed to delete budget.",
+  "add_success": "Get budget and budget partners information",
+  "add_error": "This user already has",
+  "out_success": "Leave successfully",
+  "out_error": "You can't leave",
+  "rm_user_success": "User removed successfully",
+  "rm_user_error": "You do not have permission for this action",
+  "budget_not_found": "Budget not found",
+  "budget_user_not_found": "This user is not in the budget"
+}
