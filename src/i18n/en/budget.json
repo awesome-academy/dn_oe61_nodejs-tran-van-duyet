@@ -1,0 +1,12 @@
+{
+  "create_success": "Budget created successfully.",
+  "create_error": "The budget already exists.",
+  "update_success": "Budget updated successfully.",
+  "update_error": "Budget for this category already exists.",
+  "delete_success": "Budget deleted successfully.",
+  "delete_error": "Failed to delete budget.",
+  "add_success": "Get budget and budget partners information",
+  "add_error": "This user already has",
+  "out_success": "Leave successfully",
+  "out_error": "You can't leave"
+}

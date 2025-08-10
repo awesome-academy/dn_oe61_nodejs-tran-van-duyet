@@ -1,0 +1,12 @@
+{
+  "create_success": "Tạo ngân sách thành công.",
+  "create_error": "Ngân sách đã tồn tại.",
+  "update_success": "Cập nhật ngân sách thành công.",
+  "update_error": "Ngân sách theo danh mục này đã có rồi",
+  "delete_success": "Xóa ngân sách thành công.",
+  "delete_error": "Xóa ngân sách thất bại.",
+  "add_success": "Thêm người dùng thành công",
+  "add_error": "Người dùng này đã có",
+  "out_success": "Rời khỏi thành công",
+  "out_error": "Bạn không thể rời khỏi"
+}
