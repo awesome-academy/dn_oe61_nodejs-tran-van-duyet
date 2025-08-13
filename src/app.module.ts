@@ -19,6 +19,8 @@ import { PlanModule } from './module/plan/plan.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { PostModule } from './module/post/post.module';
+import { GoalModule } from './module/goal/goal.module';
+import { GoalUserModule } from './module/goal-user/goal-user.module';
 
 @Module({
   imports: [
@@ -89,6 +91,8 @@ import { PostModule } from './module/post/post.module';
     RoleModule,
     PlanModule,
     PostModule,
+    GoalModule,
+    GoalUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

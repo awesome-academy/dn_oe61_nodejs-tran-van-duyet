@@ -1,0 +1,15 @@
+{
+  "create_success": "Tạo mục tiêu thành công.",
+  "update_success": "Cập nhật mục tiêu thành công.",
+  "update_error": "Mục tiêu này đã tồn tại",
+  "delete_success": "Xóa mục tiêu thành công.",
+  "delete_error": "Bạn không có quyền xoá",
+  "add_success": "Thêm thành viên vào Goal thành công",
+  "add_error": "Người dùng này đã có",
+  "out_success": "Rời khỏi thành công",
+  "out_error": "Bạn không thể rời khỏi",
+  "rm_user_success": " Xoá người dùng thành công",
+  "rm_user_error": "Bạn không có quyền này",
+  "user_not_found": "không tìm thấy người dùng",
+  "goal_not_found": "Không tìm thấy mục tiêu"
+}
