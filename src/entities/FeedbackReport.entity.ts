@@ -21,13 +21,13 @@ export class FeedbackReport {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ type: 'int', comment: '1 = feedback, 2 = report' })
+  @Column({ type: 'int', comment: '0 = feedback, 1 = report' })
   type: number;
 
   @Column({ type: 'text' })
   content: string;
 
-  @Column({ type: 'int', default: 0, comment: '0 = pending, 1 = resolved' })
+  @Column({ type: 'int', default: 0, comment: '0 = pending, 1 = processing, 2=resolved' })
   status: number;
 
   @Column({ type: 'text', nullable: true })
