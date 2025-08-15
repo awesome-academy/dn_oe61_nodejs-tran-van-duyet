@@ -1,0 +1,17 @@
+{
+  "create_success": "Tạo mới thành công",
+  "update_success": "Cập nhật thành công",
+  "update_error": "Cập nhật Không thành công",
+  "delete_success": "Xoá thành công",
+  "import_errors": "Import hoàn thành với lỗi. Đã nhập thành công {{count}} dòng.",
+  "category_not_found": "Danh mục '{{category}}' không tồn tại",
+  "currency_not_found": "Tiền tệ '{{currency_id}}' không tồn tại",
+  "import_success": "Import thành công. Đã nhập {{count}} dòng.",
+  "amount_invalid": "Số tiền '{{amount}}' không hợp lệ",
+  "date_invalid": "Ngày '{{date}}' không hợp lệ",
+  "import_row_error": "Dòng {{row}}: {{message}}",
+  "import_failed": "Nhập dữ liệu thất bại",
+  "near_budget": "Bạn đã đạt 80% ngân sách cho {{category}} ({{percent}}%).",
+  "over_budget": "Bạn đã vượt quá ngân sách cho {{category}} ({{percent}}%).",
+  "transaction_not_found": "Giao dịch không tồn tại"
+}

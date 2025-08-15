@@ -23,6 +23,8 @@ import { GoalModule } from './module/goal/goal.module';
 import { GoalUserModule } from './module/goal-user/goal-user.module';
 import { BudgetModule } from './module/budget/budget.module';
 import { BudgetUserModule } from './module/budget-user/budget-user.module';
+import { TransactionModule } from './module/transaction/transaction.module';
+import { CurrencyModule } from './module/currency/currency.module';
 
 @Module({
   imports: [
@@ -97,6 +99,8 @@ import { BudgetUserModule } from './module/budget-user/budget-user.module';
     GoalUserModule,
     BudgetModule,
     BudgetUserModule,
+    TransactionModule,
+    CurrencyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
