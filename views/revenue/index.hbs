@@ -1,0 +1,135 @@
+<form class="row g-3 mb-4" method="get" action="/revenue">
+  <div class="col-auto">
+    <label for="start">Start Date</label>
+    <input type="date" name="start" id="start" class="form-control" value="{{filters.start}}">
+  </div>
+  <div class="col-auto">
+    <label for="end">End Date</label>
+    <input type="date" name="end" id="end" class="form-control" value="{{filters.end}}">
+  </div>
+  <div class="col-auto">
+    <label for="group">Group By</label>
+    <select name="group" id="group" class="form-select">
+      <option value="month" {{#ifEquals filters.group "month"}}selected{{/ifEquals}}>Month</option>
+      <option value="year" {{#ifEquals filters.group "year"}}selected{{/ifEquals}}>Year</option>
+    </select>
+  </div>
+  <div class="col-auto align-self-end">
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </div>
+  <div class="col-auto">
+    <label for="chartType">Chart Type</label>
+    <select id="chartType" class="form-select">
+      <option value="bar" selected>Bar Chart</option>
+      <option value="pie">Pie Chart</option>
+    </select>
+  </div>
+</form>
+<div class="row mt-1">
+  <div class="col-md-6">
+    <h5>Total Premium Users: <span class="text-primary">{{totalPremium}}</span></h5>
+    <h5>Total Free Users: <span class="text-success">{{totalFree}}</span></h5>
+  </div>
+  <div style="max-width: 100%; height: 350px; display: flex; justify-content: center; align-items: center;">
+    <canvas id="revenueChart"></canvas>
+  </div>
+</div>
+
+<!-- Optional Table -->
+    <table class="table table-bordered table-hover align-middle mt-3">
+      <thead class="table-light text-center">
+        <tr>
+          <th>#</th>
+          <th>Plan</th>
+          <th>User Count</th>
+          <th>Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data}}
+          <tr class="text-center">
+            <td>{{@index}}</td>
+            <td>{{plan_name}}</td>
+            <td>{{user_count}}</td>
+            <td>${{revenue}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let periods = {{{json periods}}};
+  let datasets = {{{json datasets}}};
+  let totalFree = {{totalFree}};
+  let totalPremium = {{totalPremium}};
+
+  datasets = datasets.filter(ds => ds.label);
+
+  const ctx = document.getElementById('revenueChart').getContext('2d');
+  let revenueChart;
+
+  function renderChart(type) {
+    if (revenueChart) {
+      revenueChart.destroy();
+    }
+
+    if (type === 'pie') {
+      revenueChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Free', 'Premium'],
+          datasets: [{
+            data: [totalFree, totalPremium],
+            backgroundColor: [
+              'rgba(75, 192, 192, 0.6)',
+              'rgba(54, 162, 235, 0.6)'
+            ],
+            borderColor: [
+              'rgba(75, 192, 192, 1)',
+              'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { 
+            legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let label = context.label || '';
+                  let value = context.parsed || 0;
+                  let total = context.chart._metasets[0].total;
+                  let percentage = ((value / total) * 100).toFixed(2) + '%';
+                  return `${label}: ${value} (${percentage})`;
+                }
+              }
+            }
+          }
+        }
+      });
+    } else {
+      let filteredDatasets = datasets.filter(ds => ds.label && ds.label.toLowerCase() !== 'free');
+      revenueChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: periods, datasets: filteredDatasets },
+        options: { 
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    }
+  }
+
+  // Render mặc định là bar
+  renderChart('bar');
+
+  // Khi đổi select -> đổi loại chart
+  document.getElementById('chartType').addEventListener('change', function () {
+    renderChart(this.value);
+  });
+</script>
+
+

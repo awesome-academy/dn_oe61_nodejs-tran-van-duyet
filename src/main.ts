@@ -68,7 +68,11 @@ async function bootstrap() {
           }
           return result;
         },
-        safe: (value) => value || ''
+        safe: (value) => value || '',
+        json: (context) => JSON.stringify(context),
+        ifEquals: (arg1: any, arg2: any, options: any) => {
+          return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+        },
       },
     }),
   );

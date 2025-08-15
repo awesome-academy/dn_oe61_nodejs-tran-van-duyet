@@ -47,7 +47,7 @@ export class User {
   @Column({ type: 'int', default: 1 }) // ví dụ: 1 = active, 0 = deactive
   status: number;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'int', nullable: true }) // ví dụ: 1 = free, 2 = primium
   plan_id: number;
 
   @Column({ type: 'int', nullable: true })
