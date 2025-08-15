@@ -1,0 +1,162 @@
+<div class="card shadow-sm border-0 rounded-3">
+  <div class="card-header bg-secondary text-white fw-bold">
+    {{t.listTitle}}
+  </div>
+
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle mb-0">
+        <thead class="table-light text-center">
+          <tr>
+            <th>#</th>
+            <th>{{t.user}}</th>
+            <th>{{t.type}}</th>
+            <th>{{t.content}}</th>
+            <th>{{t.status}}</th>
+            <th>{{t.response}}</th>
+            <th>{{t.time}}</th>
+            <th>{{t.action}}</th>
+          </tr>
+        </thead>
+        <tbody id="reportTableBody">
+          {{#each data}}
+            <tr>
+              <td class="text-center">{{inc @index}}</td>
+              <td class="text-center">{{user_name}}</td>
+
+              <!-- Type -->
+              <td class="text-center">
+                {{#if (eq type 1)}}
+                  <span class="badge bg-secondary px-3 py-2">{{../t.typeReport}}</span>
+                {{else}}
+                  <span class="badge bg-info text-dark px-3 py-2">{{../t.typeFeedback}}</span>
+                {{/if}}
+              </td>
+
+              <!-- Content -->
+              <td>{{content}}</td>
+
+              <!-- Status -->
+              <td class="text-center">
+                {{#if (eq status 0)}}
+                  <span class="badge bg-danger-subtle text-danger px-3 py-2">{{../t.statusPending}}</span>
+                {{else if (eq status 1)}}
+                  <span class="badge bg-warning text-dark px-3 py-2">{{../t.statusProcessing}}</span>
+                {{else}}
+                  <span class="badge bg-success px-3 py-2">{{../t.statusResolved}}</span>
+                {{/if}}
+              </td>
+
+              <!-- Response -->
+              <td>{{response}}</td>
+
+              <!-- Time -->
+              <td class="text-center">{{formatDate created_at "DD/MM/YYYY HH:mm:ss"}}</td>
+
+              <!-- Action -->
+              <td class="text-center text-nowrap">
+                <button data-bs-toggle="modal" data-bs-target="#update" class="btn btn-sm btn-primary me-1"
+                    data-id="{{id}}"
+                    data-status="{{status}}"
+                    data-response="{{response}}">
+                  {{../t.update}}
+                </button>
+                <button data-id="{{id}}" data-bs-toggle="modal" data-bs-target="#delete" class="btn btn-sm btn-danger">
+                  {{../t.delete}}
+                </button>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{{!-- modal update --}}
+<div class="modal fade" id="update" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content border-0 shadow-lg rounded-3">
+      <form class="modal-form" data-url="/report" data-method="PATCH">
+        <!-- Header -->
+        <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title fw-bold" id="updateModalLabel">
+            {{t.updateTitle}}
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="{{t.close}}"></button>
+        </div>
+        
+        <!-- Body -->
+        <div class="modal-body">
+            
+            <!-- Status -->
+            <input type="hidden" id="update-id" name="id">
+            <div class="mb-3">
+            <label for="status" class="form-label fw-semibold">{{t.status}}</label>
+            <select name="status" id="update-status" class="form-select">
+                <option value="0">{{t.statusPending}}</option>
+                <option value="1">{{t.statusProcessing}}</option>
+                <option value="2">{{t.statusResolved}}</option>
+            </select>
+            </div>
+
+            <!-- Response -->
+            <div class="mb-3">
+            <label for="response" class="form-label fw-semibold">{{t.response}}</label>
+            <textarea id="update-response" name="response" class="form-control" rows="5"></textarea>
+            </div>
+
+        </div>
+        
+        <!-- Footer -->
+        <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+            {{t.close}}
+            </button>
+            <button type="submit" class="btn btn-primary px-4" data-bs-dismiss="modal">
+            {{t.saveChanges}}
+            </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{{!-- modal delete --}}
+<div class="modal fade" id="delete" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content border-0 shadow-lg rounded-3">
+      <form class="modal-form" data-url="/report" data-method="DELETE">
+        <!-- Header -->
+        <div class="modal-header bg-danger text-white">
+            <input type="hidden" id="delete-id" name="id">
+            <h5 class="modal-title fw-bold" id="deleteModalLabel">
+            {{t.deleteTitle}}
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="{{t.close}}"></button>
+        </div>
+        
+        <!-- Body -->
+        <div class="modal-body text-center py-4">
+            <p class="mb-0 fs-5">{{t.deleteConfirm}}</p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="modal-footer border-0 d-flex justify-content-center gap-2 pb-4">
+            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+            {{t.close}}
+            </button>
+            <button type="submit" class="btn btn-danger px-4" data-bs-dismiss="modal">
+            {{t.delete}}
+            </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<nav aria-label="Report pagination" class="mt-4">
+    <ul class="pagination justify-content-center" id="paginationWrapper">
+        
+    </ul>
+</nav>
+<script src="/js/modal-form-report.js"></script>

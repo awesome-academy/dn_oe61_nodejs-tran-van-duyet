@@ -8,6 +8,7 @@ import * as express from 'express';
 import * as session from 'express-session';
 import { I18nMiddleware, I18nValidationPipe } from 'nestjs-i18n';
 import { ValidationPipe } from '@nestjs/common';
+const moment = require('moment');
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -68,7 +69,10 @@ async function bootstrap() {
           }
           return result;
         },
-        safe: (value) => value || ''
+        safe: (value) => value || '',
+        formatDate: (date, format = 'YYYY-MM-DD HH:mm:ss') => {
+          return moment(date).format(format);
+        }
       },
     }),
   );
