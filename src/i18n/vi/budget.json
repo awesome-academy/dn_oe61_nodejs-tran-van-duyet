@@ -1,0 +1,17 @@
+{
+  "create_success": "Tạo ngân sách thành công.",
+  "create_error": "Ngân sách đã tồn tại.",
+  "update_success": "Cập nhật ngân sách thành công.",
+  "update_error": "Ngân sách theo danh mục này đã có rồi",
+  "update_failed": "Cập nhật thất bại",
+  "delete_success": "Xóa ngân sách thành công.",
+  "delete_error": "Xóa ngân sách thất bại.",
+  "add_success": "Thêm người dùng thành công",
+  "add_error": "Người dùng này đã có",
+  "out_success": "Rời khỏi thành công",
+  "out_error": "Bạn không thể rời khỏi",
+  "rm_user_success": " Xoá người dùng thành công",
+  "rm_user_error": "Bạn không có quyền này",
+  "budget_not_found": "Không tìm thấy hạn mức chi tiêu",
+  "budget_user_not_found": "Không có người dùng này trong ngân sách"
+}

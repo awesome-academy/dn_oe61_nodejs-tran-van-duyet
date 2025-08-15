@@ -21,6 +21,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { PostModule } from './module/post/post.module';
 import { GoalModule } from './module/goal/goal.module';
 import { GoalUserModule } from './module/goal-user/goal-user.module';
+import { BudgetModule } from './module/budget/budget.module';
+import { BudgetUserModule } from './module/budget-user/budget-user.module';
 
 @Module({
   imports: [
@@ -93,6 +95,8 @@ import { GoalUserModule } from './module/goal-user/goal-user.module';
     PostModule,
     GoalModule,
     GoalUserModule,
+    BudgetModule,
+    BudgetUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
