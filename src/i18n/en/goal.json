@@ -1,0 +1,15 @@
+{
+  "create_success": "Goal created successfully.",
+  "update_success": "Goal updated successfully.",
+  "update_error": "This goal already exists.",
+  "delete_success": "Goal deleted successfully.",
+  "delete_error": "You do not have permission to delete",
+  "add_success": "Successfully added a partner to the Goal",
+  "add_error": "This user already has",
+  "out_success": "Leave successfully",
+  "out_error": "You can't leave",
+  "rm_user_success": "User removed successfully",
+  "rm_user_error": "You do not have permission for this action",
+  "user_not_found": "User not found",
+  "goal_not_found": "Goal not found"
+}
