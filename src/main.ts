@@ -72,7 +72,11 @@ async function bootstrap() {
         safe: (value) => value || '',
         formatDate: (date, format = 'YYYY-MM-DD HH:mm:ss') => {
           return moment(date).format(format);
-        }
+        },
+        json: (context) => JSON.stringify(context),
+        ifEquals: (arg1: any, arg2: any, options: any) => {
+          return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+        },
       },
     }),
   );

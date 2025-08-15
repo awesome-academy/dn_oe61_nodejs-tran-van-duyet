@@ -80,4 +80,3 @@ export class User {
   @JoinColumn({ name: 'plan_id' })
   plan: Plan;
 }
-

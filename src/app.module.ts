@@ -31,6 +31,7 @@ import { CommentModule } from './module/comment/comment.module';
 import { ProfileModule } from './module/profile/profile.module';
 import { RecurringModule } from './module/recurring/recurring.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { RevenueModule } from './module/revenue/revenue.module';
 
 @Module({
   imports: [
@@ -113,6 +114,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     CommentModule,
     ProfileModule,
     RecurringModule,
+    RevenueModule,
   ],
   controllers: [AppController],
   providers: [AppService],
