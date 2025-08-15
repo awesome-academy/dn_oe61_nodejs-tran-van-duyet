@@ -1,0 +1,8 @@
+{
+    "create_success": "New post created successfully",
+    "no_permission_update_post": "You do not have permission to update this post",
+    "update_success": "Post updated successfully",
+    "delete_success": "Post deleted successfully",
+    "delete_error": "You cannot delete this post",
+    "not_found": "Post not found"
+}

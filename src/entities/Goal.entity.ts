@@ -16,13 +16,6 @@ export class Goal {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int' })
-  user_id: number;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
   @Column({ type: 'varchar' })
   name: string;
 
@@ -34,6 +27,9 @@ export class Goal {
 
   @Column({ type: 'text', nullable: true })
   description: string;
+
+  @Column({ type: 'int', nullable: true })
+  created_by: number;
 
   @Column({ type: 'int', nullable: true })
   updated_by: number;

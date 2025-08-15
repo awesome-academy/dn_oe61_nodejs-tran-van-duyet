@@ -18,13 +18,6 @@ export class Budget {
   id: number;
 
   @Column({ type: 'int' })
-  user_id: number;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @Column({ type: 'int' })
   category_id: number;
 
   @ManyToOne(() => Category)
@@ -42,6 +35,9 @@ export class Budget {
 
   @Column({ type: 'timestamp', nullable: true })
   end_date: Date;
+
+  @Column({ type: 'int', nullable: true })
+  created_by: number;
 
   @Column({ type: 'int', nullable: true })
   updated_by: number;

@@ -1,0 +1,8 @@
+{
+    "create_success": "Bài viết mới được tạo thành công",
+    "no_permission_update_post": "Bạn không có quyền cập nhật bài viết này",
+    "update_success": "Cập nhật bài viết thành công",
+    "delete_success": "Xoá bài viết thành công",
+    "delete_error": "Bạn không thể xoá bài viết này",
+    "not_found": "không tìm thấy bài viết"
+}
