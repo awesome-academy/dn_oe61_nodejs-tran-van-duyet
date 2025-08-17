@@ -28,6 +28,7 @@ import { CurrencyModule } from './module/currency/currency.module';
 import { ReportModule } from './module/report/report.module';
 import { LikeModule } from './module/like/like.module';
 import { CommentModule } from './module/comment/comment.module';
+import { ProfileModule } from './module/profile/profile.module';
 
 @Module({
   imports: [
@@ -107,6 +108,7 @@ import { CommentModule } from './module/comment/comment.module';
     ReportModule,
     LikeModule,
     CommentModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -32,5 +32,9 @@
   "name_should_not_be_empty": "Tên không được để trống",
   "email_must_be_valid": "Email không hợp lệ",
   "password_should_not_be_empty": "Mật khẩu không được để trống",
-  "passwords_do_not_match": "Mật khẩu không khớp"
+  "passwords_do_not_match": "Mật khẩu không khớp",
+  "user_not_found": "Người dùng không tồn tại",
+  "invalid_old_password": "Mật khẩu cũ không chính xác",
+  "password_changed_successfully": "Đổi mật khẩu thành công",
+  "email_already_exists": "Email này đã được sử dụng"
 }
