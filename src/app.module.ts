@@ -26,6 +26,8 @@ import { BudgetUserModule } from './module/budget-user/budget-user.module';
 import { TransactionModule } from './module/transaction/transaction.module';
 import { CurrencyModule } from './module/currency/currency.module';
 import { ReportModule } from './module/report/report.module';
+import { LikeModule } from './module/like/like.module';
+import { CommentModule } from './module/comment/comment.module';
 
 @Module({
   imports: [
@@ -103,6 +105,8 @@ import { ReportModule } from './module/report/report.module';
     TransactionModule,
     CurrencyModule,
     ReportModule,
+    LikeModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

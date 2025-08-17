@@ -16,10 +16,14 @@ import { JwtAuthGuardUser } from '../auth/jwt-auth.guard-user';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { User } from 'src/common/decorators/user.decorator';
 import { ParseId } from 'src/common/decorators/parse-id.decorator';
+import { LikeService } from '../like/like.service';
 
 @Controller('post')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly likeService: LikeService,
+  ) {}
 
   @UseGuards(JwtAuthGuardUser)
   @Post()
@@ -34,10 +38,7 @@ export class PostController {
   }
 
   @Get()
-  async findAll(
-    @Query('page') page = 1,
-    @Query('limit') limit = 10
-  ) {
+  async findAll(@Query('page') page = 1, @Query('limit') limit = 10) {
     const pageNumber = Math.max(1, Number(page));
     const pageSize = Math.max(1, Number(limit));
     const [post, total] = await this.postService.findAll(pageNumber, pageSize);
@@ -55,13 +56,17 @@ export class PostController {
   async findAllByUser(
     @User() user,
     @Query('page') page = 1,
-    @Query('limit') limit = 10
+    @Query('limit') limit = 10,
   ) {
     const pageNumber = Math.max(1, Number(page));
     const pageSize = Math.max(1, Number(limit));
-    const [post, total] = await this.postService.findAllByUser(+user.sub, pageNumber, pageSize);
+    const [post, total] = await this.postService.findAllByUser(
+      +user.sub,
+      pageNumber,
+      pageSize,
+    );
     const totalPages = Math.ceil(total / pageSize);
-    
+
     return {
       post,
       currentPage: pageNumber,
@@ -73,7 +78,7 @@ export class PostController {
   @Get(':id')
   async findOne(@ParseId('id') id: number) {
     const post = await this.postService.findPostById(id);
-    return { data: post }
+    return { data: post };
   }
 
   @UseGuards(JwtAuthGuardUser)
@@ -90,20 +95,41 @@ export class PostController {
     }
     return {
       message: i18n.t('post.update_success'),
-      data: post
+      data: post,
     };
   }
 
   @UseGuards(JwtAuthGuardUser)
   @Delete(':id')
-  async remove(
+  async remove(@ParseId('id') id: number, @I18n() i18n: I18nContext) {
+    const post = await this.postService.remove(id, i18n.t('post.not_found'));
+    return {
+      message: i18n.t('post.delete_success'),
+      data: post,
+    };
+  }
+
+  @UseGuards(JwtAuthGuardUser)
+  @Get('like/:id')
+  async likePost(
+    @User() user,
     @ParseId('id') id: number,
     @I18n() i18n: I18nContext,
   ) {
-    const post = await this.postService.remove(id, i18n.t('post.not_found'));
+    const existingLike = await this.likeService.hasUserLikedPost(id, +user.sub);
+    if (existingLike) {
+      const unlike = await this.likeService.unLike(id, +user.sub, i18n);
+      return {
+        status: true,
+        message: i18n.t('like.unlike_success'),
+        data: unlike,
+      };
+    }
+    const like = await this.likeService.like(id, +user.sub);
     return {
-      message: i18n.t('post.delete_success'), 
-      data: post
+      status: true,
+      message: i18n.t('like.like_success'),
+      data: like,
     };
   }
 }

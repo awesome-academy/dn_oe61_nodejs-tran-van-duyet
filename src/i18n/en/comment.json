@@ -1,0 +1,9 @@
+{
+  "create_success": "Comment created successfully",
+  "update_success": "Comment updated successfully",
+  "delete_success": "Comment delete successfully",
+  "update_error": "Comment update failed",
+  "comment_not_found": "Comment not found",
+  "cannot_update": "You cannot update this comment",
+  "cannot_delete": "You cannot delete this comment"
+}
