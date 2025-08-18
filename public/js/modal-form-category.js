@@ -23,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <td class="text-center align-middle">${(data.currentPage - 1) * data.limit + index + 1}</td>
         <td class="text-center align-middle">${cat.name}</td>
         <td class="text-center align-middle">
-          <button type="button" class="btn btn-${cat.type ? 'success' : 'secondary'}">
+          <span class="badge bg-${cat.type ? 'info text-dark' : 'secondary'} px-3 py-2">
             ${cat.type ? t.inc : t.exp}
-          </button>
+          </span>
         </td>
         <td class="align-middle">${cat.description || ''}</td>
         <td class="text-center align-middle">
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data-id="${cat.id}"
             data-name="${cat.name}"
             data-type="${cat.type}"
-            data-description="${cat.description}">
+            data-description="${(cat.description && cat.description !== 'null') ? cat.description : ''}">
             ${t.edit}
           </button>
           <button type="button" class="btn btn-danger btn-sm"

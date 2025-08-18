@@ -35,7 +35,7 @@ export class UsersController {
   @Render('users/index')
   async findAll(
     @Query('page') page = 1,
-    @Query('limit') limit = 1,
+    @Query('limit') limit = 5,
     @I18n() i18n: I18nContext,
   ) {
     const pageNumber = Math.max(1, Number(page));
@@ -57,13 +57,14 @@ export class UsersController {
       totalPages,
       limit: pageSize,
       isUsersPage: true,
+      l: i18n.t('layout')
     };
   }
 
   @Get('json')
   async getUsersJson(
     @Query('page') page = 1,
-    @Query('limit') limit = 10,
+    @Query('limit') limit = 5,
     @I18n() i18n: I18nContext
   ) {
     const pageNumber = Math.max(1, Number(page));

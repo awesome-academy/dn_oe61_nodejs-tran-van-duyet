@@ -1,0 +1,10 @@
+{
+  "menuHome": "Home",
+  "menuUser": "User",
+  "menuCategory": "Category",
+  "menuReport": "Report",
+  "menuRevenue": "System Revenue",
+  "menuSettings": "System setting",
+  "menuExpenseManagement": "Personal Expense Management",
+  "logout": "Logout"
+}

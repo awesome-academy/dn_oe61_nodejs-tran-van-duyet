@@ -1,6 +1,6 @@
 <header class="bg-gradient-primary text-white py-4 shadow-sm d-flex justify-content-between">
   <div class="d-flex justify-content-between align-items-center flex-wrap">
-    <h1 class="h3 mb-0 fw-bold"><i class="fa-solid fa-money-check-dollar"></i> Admin - Quản lý chi tiêu cá nhân</h1>
+    <h1 class="h3 mb-0 fw-bold"><i class="fa-solid fa-money-check-dollar"></i>{{l.menuExpenseManagement}}</h1>
   </div>
   <div class="d-flex">
     <div class="dropdown me-3">
@@ -21,7 +21,7 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><span class="dropdown-item-text"><small>Role: {{user.role.name}}</small></span></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="/auth/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li><a class="dropdown-item" href="/auth/logout"><i class="fas fa-sign-out-alt"></i> {{l.logout}}</a></li>
                 </ul>
             </li>
         </ul>

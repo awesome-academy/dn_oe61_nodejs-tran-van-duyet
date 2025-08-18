@@ -44,7 +44,7 @@ export class CategoryController {
   async findAll(
     @I18n() i18n: I18nContext,
     @Query('page') page = 1,
-    @Query('limit') limit = 1,
+    @Query('limit') limit = 5,
   ) {
     const pageNumber = Math.max(1, Number(page));
     const pageSize = Math.max(1, Number(limit));
@@ -62,13 +62,14 @@ export class CategoryController {
       totalPages,
       limit: pageSize,
       isCategoryPage: true,
+      l: i18n.t('layout')
     };
   }
 
   @Get('json')
   async getUsersJson(
     @Query('page') page = 1,
-    @Query('limit') limit = 1,
+    @Query('limit') limit = 5,
     @I18n() i18n: I18nContext
   ) {
     const pageNumber = Math.max(1, Number(page));

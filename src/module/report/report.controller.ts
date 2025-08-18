@@ -62,6 +62,7 @@ export class ReportController {
       totalPages,
       limit: pageSize,
       isReportPage: true,
+      l: i18n.t('layout')
     };
   }
 
