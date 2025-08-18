@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Res, Body, Req, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Res,
+  Body,
+  Req,
+  BadRequestException,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { jwtConstants } from '../auth/constants';
@@ -9,7 +18,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UsersService } from '../user/users.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-
+import { GoogleAuthGuard } from './google-auth/google-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -17,11 +26,15 @@ export class AuthController {
     private authService: AuthService,
     private usersService: UsersService,
     private jwtService: JwtService,
-    private readonly mailerService: MailerService
+    private readonly mailerService: MailerService,
   ) {}
 
   @Get('admin/login')
-  loginView(@Req() req: Request, @Res() res: Response, @I18n() i18n: I18nContext) {
+  loginView(
+    @Req() req: Request,
+    @Res() res: Response,
+    @I18n() i18n: I18nContext,
+  ) {
     const token = req.cookies['admin_token'];
     let message = req.session.message;
     let messageType = 'success';
@@ -44,18 +57,23 @@ export class AuthController {
 
     return res.render('admin/login', {
       layout: 'login',
-      t: i18n.t('auth'), 
+      t: i18n.t('auth'),
       message,
       messageType,
     });
   }
 
   @Post('login')
-  async login(@Body() body, @Res() res: Response, @Req() req: Request, @I18n() i18n: I18nContext) {
+  async login(
+    @Body() body,
+    @Res() res: Response,
+    @Req() req: Request,
+    @I18n() i18n: I18nContext,
+  ) {
     const { email, password } = body;
     const t = i18n.t('auth') as any;
     const user = await this.authService.validateUser(email, password);
-    
+
     if (user !== null && user.role_id === 1) {
       const jwt = await this.authService.login(user);
       res.cookie('admin_token', jwt.admin_token, {
@@ -71,19 +89,22 @@ export class AuthController {
         message: t.wrongPassword,
       });
     }
-    
   }
 
   @Post('user/login')
-  async loginUser(@Body() body, @Res() res: Response, @Req() req: Request, @I18n() i18n: I18nContext) {
-    
+  async loginUser(
+    @Body() body,
+    @Res() res: Response,
+    @Req() req: Request,
+    @I18n() i18n: I18nContext,
+  ) {
     const { email, password } = body;
     const t = i18n.t('auth') as any;
     const user = await this.authService.validateUser(email, password);
-    
+
     if (user === null) {
       return res.status(401).json({ status: 0, message: t.wrongPassword });
-    } else if ( user.status === 1 ) {
+    } else if (user.status === 1) {
       const jwt = await this.authService.loginUser(user);
       console.log(jwt);
       
@@ -96,7 +117,7 @@ export class AuthController {
       return res.status(200).json({ message: t.messageLogin });
     } else {
       return res.status(401).json({ message: t.check_activate });
-    } 
+    }
   }
 
   @Get('logout')
@@ -115,17 +136,22 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() CreateUserDto: CreateUserDto, @I18n() i18n: I18nContext){
+  async register(
+    @Body() CreateUserDto: CreateUserDto,
+    @I18n() i18n: I18nContext,
+  ) {
     const t = i18n.t('auth') as any;
     if (CreateUserDto.encrypted_password !== CreateUserDto.repassword) {
       return {
-        message: t.confirm_password
+        message: t.confirm_password,
       };
     }
-    const existingUser = await this.usersService.findByEmail(CreateUserDto.email);
+    const existingUser = await this.usersService.findByEmail(
+      CreateUserDto.email,
+    );
     if (existingUser) {
       return {
-        message: t.Check_email
+        message: t.Check_email,
       };
     }
     const user = await this.usersService.register(CreateUserDto);
@@ -143,5 +169,25 @@ export class AuthController {
       message: t.activated,
       user,
     };
+  }
+
+  @UseGuards(GoogleAuthGuard)
+  @Get('google/login')
+  googleLogin() {}
+
+  @UseGuards(GoogleAuthGuard)
+  @Get('google/callback')
+  async googleCallback(@Req() req, @Res() res: Response, @I18n() i18n: I18nContext) {
+    const jwt = await this.authService.loginUser(req.user);
+    res.cookie('user_token', jwt.user_token, {
+      httpOnly: true, // Do not allow JS access (anti-XSS)
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      sameSite: 'lax', // GReducing CSRF Risk
+      // secure: true,             // Enable if you use HTTPS
+    });
+    return res.status(200).json({ 
+      status: true,
+      message: i18n.t('auth.messageLogin') 
+    });
   }
 }
