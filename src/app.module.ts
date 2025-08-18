@@ -25,6 +25,7 @@ import { BudgetModule } from './module/budget/budget.module';
 import { BudgetUserModule } from './module/budget-user/budget-user.module';
 import { TransactionModule } from './module/transaction/transaction.module';
 import { CurrencyModule } from './module/currency/currency.module';
+import { ReportModule } from './module/report/report.module';
 
 @Module({
   imports: [
@@ -101,6 +102,7 @@ import { CurrencyModule } from './module/currency/currency.module';
     BudgetUserModule,
     TransactionModule,
     CurrencyModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],

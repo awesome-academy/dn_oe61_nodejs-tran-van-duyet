@@ -1,0 +1,31 @@
+{
+    "create_success": "Feedback/report created successfully.",
+    "create_failed": "Failed to create feedback/report.",
+    "update_success": "Feedback/report updated successfully.",
+    "update_failed": "Failed to update feedback/report.",
+    "delete_success": "Feedback/report deleted successfully.",
+    "delete_failed": "Failed to delete feedback/report.",
+    "report_not_found": "Report does not exist",
+
+    "listTitle": "Report List",
+    "user": "User",
+    "type": "Type",
+    "content": "Content",
+    "status": "Status",
+    "response": "Response",
+    "time": "Time",
+    "action": "Action",
+    "typeReport": "Report",
+    "typeFeedback": "Feedback",
+    "statusPending": "Pending",
+    "statusProcessing": "Processing",
+    "statusResolved": "Resolved",
+
+    "update": "Update",
+    "delete": "Delete",
+    "updateTitle": "Update report",
+    "close": "Close",
+    "saveChanges": "Save changes",
+    "deleteTitle": "Delete report",
+    "deleteConfirm": "Are you sure you want to delete?"
+}
