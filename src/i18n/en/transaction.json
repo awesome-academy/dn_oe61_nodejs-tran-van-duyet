@@ -1,0 +1,17 @@
+{
+  "create_success": "Transaction created successfully",
+  "update_success": "Transaction updated successfully",
+  "update_error": "Update Failed",
+  "delete_success": "Deleted successfully",
+  "import_errors": "Import completed with errors. Successfully imported {{count}} rows.",
+  "import_success": "Import successful. Imported {{count}} rows.",
+  "category_not_found": "Category '{{category}}' does not exist",
+  "currency_not_found": "Currency '{{currency_id}}' does not exist",
+  "amount_invalid": "Amount '{{amount}}' is invalid",
+  "date_invalid": "Date '{{date}}' is invalid",
+  "import_row_error": "Row {{row}}: {{message}}",
+  "import_failed": "Import failed",
+  "near_budget": "You have reached 80% of your budget for {{category}} ({{percent}}%).",
+  "over_budget": "You have exceeded your budget for {{category}} ({{percent}}%).",
+  "transaction_not_found": "Transaction does not exist"
+}
