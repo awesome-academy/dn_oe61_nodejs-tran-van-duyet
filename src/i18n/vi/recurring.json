@@ -1,0 +1,9 @@
+{
+    "create_success": "Tạo giao dịch định kỳ thành công",
+    "create_failed": "Tạo giao dịch định kỳ thất bại",
+    "update_success": "Cập nhật giao dịch định kỳ thành công",
+    "update_failed": "Cập nhật giao dịch định kỳ thất bại",
+    "delete_success": "Xóa giao dịch định kỳ thành công",
+    "delete_failed": "Xóa giao dịch định kỳ thất bại",
+    "not_found": "Không tìm thấy giao dịch định kỳ"
+}

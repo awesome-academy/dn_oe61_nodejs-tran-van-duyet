@@ -85,6 +85,8 @@ export class AuthController {
       return res.status(401).json({ status: 0, message: t.wrongPassword });
     } else if ( user.status === 1 ) {
       const jwt = await this.authService.loginUser(user);
+      console.log(jwt);
+      
       res.cookie('user_token', jwt.user_token, {
         httpOnly: true, // Do not allow JS access (anti-XSS)
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days

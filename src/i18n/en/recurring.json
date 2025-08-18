@@ -1,0 +1,9 @@
+{
+    "create_success": "Recurring transaction created successfully",
+    "create_failed": "Failed to create recurring transaction",
+    "update_success": "Recurring transaction updated successfully",
+    "update_failed": "Failed to update recurring transaction",
+    "delete_success": "Recurring transaction deleted successfully",
+    "delete_failed": "Failed to delete recurring transaction",
+    "not_found": "Recurring transaction not found"
+}

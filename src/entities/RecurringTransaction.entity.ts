@@ -34,6 +34,9 @@ export class RecurringTransaction {
   @Column({ type: 'timestamp', nullable: true })
   end_date: Date;
 
+  @Column({ type: 'timestamp', nullable: true })
+  last_created_at: Date | null;
+
   @CreateDateColumn()
   created_at: Date;
 
