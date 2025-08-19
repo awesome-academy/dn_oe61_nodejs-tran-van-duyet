@@ -8,6 +8,7 @@ import * as express from 'express';
 import * as session from 'express-session';
 import { I18nMiddleware, I18nValidationPipe } from 'nestjs-i18n';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 const moment = require('moment');
 
 async function bootstrap() {
@@ -81,6 +82,15 @@ async function bootstrap() {
     }),
   );
   app.setViewEngine('hbs');
+
+  const config = new DocumentBuilder()
+    .setTitle('Personal Finance Management example')
+    .setDescription('The personal Finance Management API description')
+    .setVersion('1.0')
+    .addTag('Personal Finance Management')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
 }

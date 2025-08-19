@@ -7,6 +7,8 @@ import {
   Req,
   BadRequestException,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
@@ -15,11 +17,17 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { MailerService } from '@nestjs-modules/mailer';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { UsersService } from '../user/users.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { GoogleAuthGuard } from './google-auth/google-auth.guard';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags, ApiExcludeEndpoint } from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { RegisterResponseDto } from './dto/register-response.dto';
+import { logoutAuthMessageResponseDto, activeAuthMessageResponseDto } from './dto/auth-message-response.dto';
+import { ActivateDto } from './dto/activate.dto';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -29,6 +37,7 @@ export class AuthController {
     private readonly mailerService: MailerService,
   ) {}
 
+  @ApiExcludeEndpoint()
   @Get('admin/login')
   loginView(
     @Req() req: Request,
@@ -63,6 +72,7 @@ export class AuthController {
     });
   }
 
+  @ApiExcludeEndpoint()
   @Post('login')
   async login(
     @Body() body,
@@ -92,6 +102,11 @@ export class AuthController {
   }
 
   @Post('user/login')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Đăng nhập cho người dùng (User)' })
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({ status: 200, description: 'Đăng nhập thành công.', type: LoginResponseDto })
+  @ApiResponse({ status: 401, description: 'Sai email hoặc mật khẩu / Tài khoản chưa kích hoạt.' })
   async loginUser(
     @Body() body,
     @Res() res: Response,
@@ -120,6 +135,7 @@ export class AuthController {
     }
   }
 
+  @ApiExcludeEndpoint()
   @Get('logout')
   logout(@Res() res: Response, @Req() req: Request, @I18n() i18n: I18nContext) {
     res.clearCookie('admin_token');
@@ -129,6 +145,9 @@ export class AuthController {
   }
 
   @Get('logout/user')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Đăng xuất cho người dùng (User)' })
+  @ApiResponse({ status: 200, description: 'Đăng xuất thành công.', type: logoutAuthMessageResponseDto })
   logoutUser(@Res() res: Response, @I18n() i18n: I18nContext) {
     res.clearCookie('user_token');
     const t = i18n.t('auth') as any;
@@ -136,6 +155,9 @@ export class AuthController {
   }
 
   @Post('register')
+  @ApiOperation({ summary: 'Đăng ký tài khoản mới' })
+  @ApiResponse({ status: 201, description: 'Đăng ký thành công.', type: RegisterResponseDto })
+  @ApiResponse({ status: 400, description: 'Mật khẩu không khớp hoặc email đã tồn tại.' })
   async register(
     @Body() CreateUserDto: CreateUserDto,
     @I18n() i18n: I18nContext,
@@ -162,6 +184,11 @@ export class AuthController {
   }
 
   @Post('activate')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Kích hoạt tài khoản' })
+  @ApiBody({ type: ActivateDto })
+  @ApiResponse({ status: 200, description: 'Kích hoạt thành công.', type: activeAuthMessageResponseDto })
+  @ApiResponse({ status: 400, description: 'Token không hợp lệ.' })
   async activate(@Body() body, @I18n() i18n: I18nContext) {
     const t = i18n.t('auth') as any;
     const user = await this.usersService.activateAccount(body.token);
@@ -171,10 +198,13 @@ export class AuthController {
     };
   }
 
-  @UseGuards(GoogleAuthGuard)
   @Get('google/login')
+  @UseGuards(GoogleAuthGuard)
+  @ApiOperation({ summary: 'Bắt đầu quá trình đăng nhập với Google' })
+  @ApiResponse({ status: 302, description: 'Redirect đến trang đăng nhập của Google.' })
   googleLogin() {}
 
+  @ApiExcludeEndpoint()
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
   async googleCallback(@Req() req, @Res() res: Response, @I18n() i18n: I18nContext) {

@@ -1,4 +1,22 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePostDto } from './create-post.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
-export class UpdatePostDto extends PartialType(CreatePostDto) {}
+export class UpdatePostDto {
+  @ApiProperty({
+    description: 'Tiêu đề mới của bài viết',
+    example: 'Cập nhật tiêu đề',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @ApiProperty({
+    description: 'Nội dung mới của bài viết',
+    example: 'Cập nhật nội dung...',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  content?: string;
+}

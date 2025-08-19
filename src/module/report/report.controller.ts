@@ -19,13 +19,18 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtAuthGuardUser } from '../auth/jwt-auth.guard-user';
 import { userUpdateReportDto } from './dto/user-update.dto';
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/config/pagination.constant';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { createReportResponseDto, UserReportListResponseDto, updateReportResponseDto } from './dto/report-responses.dto';
 
+@ApiTags('Feedback & Report (User)')
 @Controller('report')
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 
   @UseGuards(JwtAuthGuardUser)
   @Post()
+  @ApiOperation({ summary: 'Người dùng tạo một feedback hoặc report mới' })
+  @ApiResponse({ status: 201, description: 'Tạo feedback/report thành công.', type: createReportResponseDto })
   async create(
     @Body() createReportDto: CreateReportDto,
     @I18n() i18n: I18nContext,
@@ -93,6 +98,10 @@ export class ReportController {
 
   @UseGuards(JwtAuthGuardUser)
   @Get('my')
+  @ApiOperation({ summary: 'Người dùng lấy danh sách feedback/report của chính mình (phân trang)' })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiResponse({ status: 200, description: 'Thành công.', type: UserReportListResponseDto })
   async findAllByUser(
     @User() user,
     @Query('page') page = DEFAULT_PAGE,
@@ -132,6 +141,10 @@ export class ReportController {
 
   @UseGuards(JwtAuthGuardUser)
   @Patch('user/:id')
+  @ApiOperation({ summary: 'Người dùng cập nhật nội dung feedback/report của mình' })
+  @ApiParam({ name: 'id', description: 'ID của feedback/report' })
+  @ApiResponse({ status: 200, description: 'Cập nhật feedback/report thành công.', type: updateReportResponseDto })
+  @ApiResponse({ status: 404, description: 'Báo cáo không tồn tại' })
   async userUpdate(
     @ParseId('id') id: number,
     @Body() userUpdateReportDto: userUpdateReportDto,

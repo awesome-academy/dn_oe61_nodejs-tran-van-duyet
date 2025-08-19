@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Render,
@@ -21,6 +20,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RoleService } from '../role/role.service';
 import { PlanService } from '../plan/plan.service';
 import { I18n, I18nContext } from 'nestjs-i18n';
+
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {

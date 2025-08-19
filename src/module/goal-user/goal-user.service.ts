@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GoalUser } from 'src/entities/GoalUser.entity';
 import { Repository } from 'typeorm';
@@ -10,7 +14,11 @@ export class GoalUserService {
     private readonly goalUserRepository: Repository<GoalUser>,
   ) {}
 
-  async create(goal_id: number, user_id: number, message: string): Promise<GoalUser> {
+  async create(
+    goal_id: number,
+    user_id: number,
+    message: string,
+  ): Promise<GoalUser | null> {
     const exists = await this.goalUserRepository.findOne({
       where: {
         goal: { id: goal_id },
@@ -26,10 +34,28 @@ export class GoalUserService {
       goal: { id: goal_id },
       user: { id: user_id },
     });
-    return this.goalUserRepository.save(goal_user);
+    const saved = await this.goalUserRepository.save(goal_user);
+
+    return this.goalUserRepository.findOne({
+      where: { id: saved.id },
+      relations: ['user'],
+      select: {
+        id: true,
+        user: {
+          id: true,
+          email: true,
+          name: true,
+          avatar: true,
+        },
+      },
+    });
   }
 
-  async remove(goal_id: number, user_id: number,message: string): Promise<GoalUser> {
+  async remove(
+    goal_id: number,
+    user_id: number,
+    message: string,
+  ): Promise<GoalUser> {
     const goal_user = await this.goalUserRepository.findOneBy({
       goal: { id: goal_id },
       user: { id: user_id },
