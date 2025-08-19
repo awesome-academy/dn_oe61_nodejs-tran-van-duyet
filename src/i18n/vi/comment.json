@@ -1,0 +1,9 @@
+{
+    "create_success": "Bình luận bài viết thành công",
+    "update_success": "Sửa bình luận thành công",
+    "delete_success": "Xoá bình luận thành công",
+    "update_error": "Sửa bình luận thất bại",
+    "comment_not_found": "Bình luận không tồn tại",
+    "cannot_update": "Bạn không thể sửa bình luận này",
+    "cannot_delete": "Bạn không thể xoá bình luận này"
+}
