@@ -1,0 +1,20 @@
+import { Module } from '@nestjs/common';
+import { ProfileService } from './profile.service';
+import { ProfileController } from './profile.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/entities/User.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from '../auth/constants';
+
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '30d' },
+    }),
+  ],
+  controllers: [ProfileController],
+  providers: [ProfileService],
+})
+export class ProfileModule {}

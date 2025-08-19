@@ -47,10 +47,10 @@ export class User {
   @Column({ type: 'int', default: 1 }) // ví dụ: 1 = active, 0 = deactive
   status: number;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'int', default: 1  })
   plan_id: number;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'int', default: 1  })
   role_id: number;
 
   @CreateDateColumn()
