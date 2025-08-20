@@ -1,0 +1,70 @@
+<form class="row g-3 mb-4" method="get" action="/revenue">
+  <div class="col-auto">
+    <label for="start">{{t.startDate}}</label>
+    <input type="date" name="start" id="start" class="form-control" value="{{filters.start}}">
+  </div>
+  <div class="col-auto">
+    <label for="end">{{t.endDate}}</label>
+    <input type="date" name="end" id="end" class="form-control" value="{{filters.end}}">
+  </div>
+  <div class="col-auto">
+    <label for="group">{{t.groupBy}}</label>
+    <select name="group" id="group" class="form-select">
+      <option value="month" {{#ifEquals filters.group "month"}}selected{{/ifEquals}}>{{t.month}}</option>
+      <option value="year" {{#ifEquals filters.group "year"}}selected{{/ifEquals}}>{{t.year}}</option>
+    </select>
+  </div>
+  <div class="col-auto align-self-end">
+    <button type="submit" class="btn btn-primary">{{t.filter}}</button>
+  </div>
+  <div class="col-auto">
+    <label for="chartType">{{t.chartType}}</label>
+    <select id="chartType" class="form-select">
+      <option value="bar" selected>{{t.barChart}}</option>
+      <option value="pie">{{t.pieChart}}</option>
+    </select>
+  </div>
+</form>
+<div class="row mt-1">
+  <div class="col-md-6">
+    <h5>{{t.totalPremiumUsers}}: <span class="text-primary">{{totalPremium}}</span></h5>
+    <h5>{{t.totalFreeUsers}}: <span class="text-success">{{totalFree}}</span></h5>
+  </div>
+  <div style="max-width: 100%; height: 350px; display: flex; justify-content: center; align-items: center;">
+    <canvas id="revenueChart"></canvas>
+  </div>
+</div>
+<div id="chart-data"
+     data-periods='{{{json periods}}}'
+     data-datasets='{{{json datasets}}}'
+     data-total-free="{{totalFree}}"
+     data-total-premium="{{totalPremium}}">
+</div>
+
+<!-- Optional Table -->
+    <table class="table table-bordered table-hover align-middle mt-3">
+      <thead class="table-light text-center">
+        <tr>
+          <th>#</th>
+          <th>{{t.month}}</th>
+          <th>{{t.plan}}</th>
+          <th>{{t.userCount}}</th>
+          <th>{{t.revenue}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each revenueData}}
+          <tr class="text-center">
+            <td>{{@index}}</td>
+            <td>{{period}}</td>
+            <td>{{plan_name}}</td>
+            <td>{{user_count}}</td>
+            <td>${{revenue}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+<script src="/js/chart.umd.js"></script>
+<script src="/js/revenue.js"></script>
+
+

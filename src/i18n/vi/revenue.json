@@ -1,0 +1,17 @@
+{
+  "startDate": "Ngày bắt đầu",
+  "endDate": "Ngày kết thúc",
+  "groupBy": "Nhóm theo",
+  "month": "Tháng",
+  "year": "Năm",
+  "filter": "Lọc",
+  "period": "Tháng",
+  "plan": "Gói",
+  "userCount": "Số người dùng",
+  "revenue": "Doanh thu",
+  "chartType": "Loại biểu đồ",
+  "barChart": "Biểu đồ cột",
+  "pieChart": "Biểu đồ tròn",
+  "totalPremiumUsers": "Tổng người dùng Premium",
+  "totalFreeUsers": "Tổng người dùng Free"
+}
