@@ -1,69 +1,71 @@
-<div class="card">
-    <div class="card-header d-flex justify-content-between">
-        <h2>{{ t.userManagement }}</h2>
-        <button data-bs-toggle="modal" data-bs-target="#add" class="btn btn-primary">{{t.add}}</button>
+<div class="text-end"><button data-bs-toggle="modal" data-bs-target="#add" class="btn btn-primary">{{t.add}}</button></div>
+<div class="card mt-2 shadow-sm border-0 rounded-3">
+    <div class="card-header bg-secondary text-white fw-bold">
+        <h5>{{ t.userManagement }}</h5>
     </div>
-    <div class="card-body">
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr class="text-center align-middle">
-                    <th>#</th>
-                    <th>{{t.fullName}}</th>
-                    <th>{{t.email}}</th>
-                    <th>{{t.phone}}</th>
-                    <th>{{t.avatar}}</th>
-                    <th>{{t.description}}</th>
-                    <th>{{t.role}}</th>
-                    <th>{{t.plan}}</th>
-                    <th>{{t.status}}</th>
-                    <th>{{t.actions}}</th>
-                </tr>
-            </thead>
-            <tbody id="userTableBody">
-                {{#each users}}
-                <tr>
-                    <td class="text-center align-middle">{{inc @index}}</td>
-                    <td class="align-middle">{{name}}</td>
-                    <td class="align-middle">{{email}}</td>
-                    <td class="align-middle">{{phone}}</td>
-                    <td class="text-center align-middle">
-                        <img class="rounded-circle" width="50px" src="{{avatar}}" alt="">
-                    </td>
-                    <td class="align-middle">{{description}}</td>
-                    <td class="text-center align-middle">{{role.name}}</td>
-                    <td class="text-center align-middle">{{plan.name}}</td>
-                    <td class="text-center align-middle">
-                        {{#if (eq status 1)}}
-                        <button class="btn btn-success">{{../t.active}}</button>
-                        {{else}}
-                        <button class="btn btn-warning">{{../t.close}}</button>
-                        {{/if}}
-                    </td>
-                    <td class="text-center align-middle text-nowrap">
-                        <button data-bs-toggle="modal" data-bs-target="#edit" class="btn btn-info" 
-                        data-id="{{id}}"
-                        data-name="{{name}}"
-                        data-email="{{email}}"
-                        data-phone="{{phone}}"
-                        data-avatar="{{avatar}}"
-                        data-description="{{description}}"
-                        data-role_id="{{role_id}}"
-                        data-plan_id="{{plan_id}}"
-                        data-status="{{status}}"
-                        >{{../t.update}}</button>
-                        <button data-id="{{id}}"  data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger">{{../t.delete}}</button>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr class="text-center align-middle">
+                        <th>#</th>
+                        <th>{{t.fullName}}</th>
+                        <th>{{t.email}}</th>
+                        <th>{{t.phone}}</th>
+                        <th>{{t.avatar}}</th>
+                        <th>{{t.description}}</th>
+                        <th>{{t.role}}</th>
+                        <th>{{t.plan}}</th>
+                        <th>{{t.status}}</th>
+                        <th>{{t.actions}}</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    {{#each users}}
+                    <tr>
+                        <td class="text-center align-middle">{{inc @index}}</td>
+                        <td class="align-middle">{{name}}</td>
+                        <td class="align-middle">{{email}}</td>
+                        <td class="align-middle">{{phone}}</td>
+                        <td class="text-center align-middle">
+                            <img class="rounded-circle" width="50px" src="{{avatar}}" alt="">
+                        </td>
+                        <td class="align-middle">{{description}}</td>
+                        <td class="text-center align-middle">{{role.name}}</td>
+                        <td class="text-center align-middle">{{plan.name}}</td>
+                        <td class="text-center align-middle">
+                            {{#if (eq status 1)}}
+                            <span class="badge bg-success px-3 py-2">{{../t.active}}</span>
+                            {{else}}
+                            <span class="badge bg-warning text-dark px-3 py-2">{{../t.close}}</span>
+                            {{/if}}
+                        </td>
+                        <td class="text-center align-middle text-nowrap">
+                            <button data-bs-toggle="modal" data-bs-target="#edit" class="btn btn-info" 
+                            data-id="{{id}}"
+                            data-name="{{name}}"
+                            data-email="{{email}}"
+                            data-phone="{{phone}}"
+                            data-avatar="{{avatar}}"
+                            data-description="{{description}}"
+                            data-role_id="{{role_id}}"
+                            data-plan_id="{{plan_id}}"
+                            data-status="{{status}}"
+                            >{{../t.update}}</button>
+                            <button data-id="{{id}}"  data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger">{{../t.delete}}</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </div>
     <!-- Modal Edit -->
         <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+                <div class="modal-content border-0 shadow-lg rounded-3">
                     <form class="modal-form" data-url="/users" data-method="PUT">
-                        <div class="modal-header">
+                        <div class="modal-header bg-primary text-white">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">{{t.editUser}}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -74,8 +76,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{t.cancel}}</button>
-                            <button type="submit" class="btn btn-primary">{{t.update}}</button>
+                            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">{{t.cancel}}</button>
+                            <button type="submit" class="btn btn-primary px-4">{{t.update}}</button>
                         </div>
                     </form>
                 </div>
@@ -84,10 +86,10 @@
         <!-- Modal add -->
         <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+                <div class="modal-content border-0 shadow-lg rounded-3">
                     <form class="modal-form" data-url="/users" data-method="POST">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{t.createUser}}</h1>
+                        <div class="modal-header bg-primary text-white">
+                            <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">{{t.createUser}}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -96,8 +98,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{t.cancel}}</button>
-                            <button type="submit" class="btn btn-primary">{{t.create}}</button>
+                            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">{{t.cancel}}</button>
+                            <button type="submit" class="btn btn-primary px-4">{{t.create}}</button>
                         </div>
                     </form>
                 </div>
@@ -107,17 +109,19 @@
         <div class="modal fade" id="deleteModal" tabindex="-1">
             <div class="modal-dialog">
                 <form class="modal-form" data-url="" data-method="DELETE">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title">{{t.deleteConfirmTitle}}</h5>
+                    <div class="modal-content border-0 shadow-lg rounded-3">
+                        <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title fw-bold">{{t.deleteConfirmTitle}}</h5>
                         </div>
                         <div class="modal-body">
                         <input type="hidden" id="deleteUserModal-id" name="id">
-                        <p>{{t.deleteConfirmText}}</p>
+                        <div class="modal-body text-center py-4">
+                            <p class="mb-0 fs-5">{{t.deleteConfirmText}}</p>
                         </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{t.cancel}}</button>
-                        <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">{{t.delete}}</button>
+                        </div>
+                        <div class="modal-footer border-0 d-flex justify-content-center gap-2 pb-4">
+                        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">{{t.cancel}}</button>
+                        <button type="submit" class="btn btn-danger px-4" data-bs-dismiss="modal">{{t.delete}}</button>
                         </div>
                     </div>
                 </form>

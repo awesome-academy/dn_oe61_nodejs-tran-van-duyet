@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td class="text-center align-middle">${(data.currentPage - 1) * data.limit + index + 1}</td>
         <td class="align-middle">${user.name}</td>
         <td class="align-middle">${user.email}</td>
-        <td class="align-middle">${user.phone}</td>
+        <td class="align-middle">${(user.phone && user.phone !== 'null') ? user.phone : ''}</td>
         <td class="text-center align-middle">
           <img class="rounded-circle" width="50px" src="${user.avatar}" alt="">
         </td>
@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <td class="text-center align-middle">${user.role?.name || ''}</td>
         <td class="text-center align-middle">${user.plan?.name || ''}</td>
         <td class="text-center align-middle">
-          <button class="btn btn-${user.status === 1 ? 'success' : 'warning'}">
+          <span class="badge bg-${user.status === 1 ? 'success' : 'warning text-dark'} px-3 py-2">
             ${user.status === 1 ? t.active : t.close}
-          </button>
+          </span>
         </td>
         <td class="text-center align-middle text-nowrap">
           <button class="btn btn-info"
@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
             data-id="${user.id}"
             data-name="${user.name}"
             data-email="${user.email}"
-            data-phone="${user.phone}"
-            data-avatar="${user.avatar}"
-            data-description="${user.description}"
+            data-phone="${(user.phone && user.phone !== 'null') ? user.phone : ''}"
+            data-avatar="${(user.avatar && user.avatar !== 'null') ? user.avatar : ''}"
+            data-description="${(user.description && user.description !== 'null') ? user.description : ''}"
             data-role_id="${user.role_id}"
             data-plan_id="${user.plan_id}"
             data-status="${user.status}">
