@@ -29,9 +29,12 @@ import { ReportModule } from './module/report/report.module';
 import { LikeModule } from './module/like/like.module';
 import { CommentModule } from './module/comment/comment.module';
 import { ProfileModule } from './module/profile/profile.module';
+import { RecurringModule } from './module/recurring/recurring.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({ 
       isGlobal: true,
       load: [configuration],
@@ -109,6 +112,7 @@ import { ProfileModule } from './module/profile/profile.module';
     LikeModule,
     CommentModule,
     ProfileModule,
+    RecurringModule,
   ],
   controllers: [AppController],
   providers: [AppService],
