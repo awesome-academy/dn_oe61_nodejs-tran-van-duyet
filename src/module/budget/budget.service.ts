@@ -1,4 +1,9 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateBudgetDto } from './dto/create-budget.dto';
 import { UpdateBudgetDto } from './dto/update-budget.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,21 +15,24 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 export class BudgetService {
   constructor(
     @InjectRepository(Budget)
-    private readonly budgetRepository: Repository<Budget>
-  ){}
+    private readonly budgetRepository: Repository<Budget>,
+  ) {}
 
-  async create(createBudgetDto: CreateBudgetDto, @I18n() i18n: I18nContext): Promise<Budget> {
+  async create(
+    createBudgetDto: CreateBudgetDto,
+    @I18n() i18n: I18nContext,
+  ): Promise<Budget> {
     const created_by = createBudgetDto.created_by;
     const category_id = createBudgetDto.category_id;
-    
-    const existingBudget = await this.budgetRepository.findOne({ 
-      where: { 
+
+    const existingBudget = await this.budgetRepository.findOne({
+      where: {
         created_by,
         category_id,
       },
-    })
-    
-    if(existingBudget){
+    });
+
+    if (existingBudget) {
       throw new ConflictException(i18n.t('budget.create_error'));
     }
     const budget = await this.budgetRepository.create(createBudgetDto);
@@ -49,6 +57,8 @@ export class BudgetService {
         'budget.end_date',
 
         'bu.id',
+        'user.id',
+        'user.email',
         'user.name',
         'user.avatar',
       ])
@@ -65,7 +75,10 @@ export class BudgetService {
     };
   }
 
-  async findBudgetDetail(id: number, @I18n() i18n: I18nContext): Promise<Budget> {
+  async findBudgetDetail(
+    id: number,
+    @I18n() i18n: I18nContext,
+  ): Promise<Budget> {
     const budget = await this.budgetRepository
       .createQueryBuilder('budget')
       .leftJoinAndSelect('budget.category', 'category')
@@ -88,6 +101,7 @@ export class BudgetService {
         'updatedByUser.avatar',
         'bu.id',
         'user.id',
+        'user.email',
         'user.name',
         'user.avatar',
       ])
@@ -101,19 +115,26 @@ export class BudgetService {
     return budget;
   }
 
-  async update(id: number, updateBudgetDto: UpdateBudgetDto, @I18n() i18n: I18nContext) {
+  async update(
+    id: number,
+    updateBudgetDto: UpdateBudgetDto,
+    @I18n() i18n: I18nContext,
+  ) {
     const budget = await this.budgetRepository.findOne({ where: { id } });
     if (!budget) {
       throw new NotFoundException(i18n.t('budget.budget_not_found'));
     }
-    
-    const existing = await this.budgetRepository.findOne({
-      where: {
-        category_id: updateBudgetDto.category_id,
-        id: Not(id),
-      },
-    });
-    
+
+    const existing = await this.budgetRepository
+      .createQueryBuilder('budget')
+      .innerJoin('budget.budgetUsers', 'bu')
+      .where('budget.category_id = :categoryId', {
+        categoryId: updateBudgetDto.category_id,
+      })
+      .andWhere('budget.id != :id', { id })
+      .andWhere('bu.user_id = :userId', { userId: updateBudgetDto.updated_by })
+      .getOne();
+
     if (existing) {
       throw new ConflictException(i18n.t('budget.update_error'));
     }
@@ -123,8 +144,8 @@ export class BudgetService {
     if (result.affected === 0) {
       throw new BadRequestException(i18n.t('budget.update_failed'));
     }
-    
-    return await this.budgetRepository.findOne({ where: { id } });;
+
+    return await this.budgetRepository.findOne({ where: { id } });
   }
 
   async isUserCreator(user_id: number, budget_id: number): Promise<boolean> {
@@ -133,9 +154,8 @@ export class BudgetService {
     }));
   }
 
-
   async remove(id: number) {
-    const budget = this.budgetRepository.findOneBy({id});
+    const budget = this.budgetRepository.findOneBy({ id });
     await this.budgetRepository.delete(id);
     return budget;
   }

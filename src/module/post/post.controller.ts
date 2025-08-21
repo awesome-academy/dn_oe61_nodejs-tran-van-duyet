@@ -1,7 +1,7 @@
 import {
   Controller,
   Get,
-  Post,
+  Post as PostMethod,
   Body,
   Delete,
   Put,
@@ -17,7 +17,19 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { User } from 'src/common/decorators/user.decorator';
 import { ParseId } from 'src/common/decorators/parse-id.decorator';
 import { LikeService } from '../like/like.service';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+  ApiParam,
+} from '@nestjs/swagger';
+import { Post } from 'src/entities/Post.entity'; // Import entity Post
+import { PostListResponseDto } from './dto/post-list-response.dto';
+import { SinglePostResponseDto, UpdatePostResponseDto, LikePostResponseDto } from './dto/post-response.dto';
 
+@ApiTags('Post')
 @Controller('post')
 export class PostController {
   constructor(
@@ -25,8 +37,17 @@ export class PostController {
     private readonly likeService: LikeService,
   ) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuardUser)
-  @Post()
+  @PostMethod()
+  @ApiOperation({ summary: 'Tạo một bài viết mới' })
+  @ApiResponse({
+    status: 201,
+    description: 'Tạo bài viết thành công.',
+    type: SinglePostResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Chưa xác thực.' })
+  @UseGuards(JwtAuthGuardUser)
   async create(
     @Body() createPostDto: CreatePostDto,
     @User() user,
@@ -38,6 +59,14 @@ export class PostController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Lấy danh sách tất cả bài viết (phân trang)' })
+  @ApiQuery({ name: 'page', required: false, description: 'Số trang', type: Number })
+  @ApiQuery({ name: 'limit', required: false, description: 'Số lượng mỗi trang', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Thành công.',
+    type: PostListResponseDto,
+  })
   async findAll(@Query('page') page = 1, @Query('limit') limit = 10) {
     const pageNumber = Math.max(1, Number(page));
     const pageSize = Math.max(1, Number(limit));
@@ -51,8 +80,14 @@ export class PostController {
     };
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuardUser)
   @Get('user')
+  @ApiOperation({ summary: 'Lấy danh sách bài viết của người dùng đã đăng nhập' })
+  @ApiQuery({ name: 'page', required: false, description: 'Số trang', type: Number })
+  @ApiQuery({ name: 'limit', required: false, description: 'Số lượng mỗi trang', type: Number })
+  @ApiResponse({ status: 200, description: 'Thành công.', type: PostListResponseDto })
+  @ApiResponse({ status: 401, description: 'Chưa xác thực.' })
   async findAllByUser(
     @User() user,
     @Query('page') page = 1,
@@ -76,13 +111,27 @@ export class PostController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Tìm một bài viết theo ID' })
+  @ApiParam({ name: 'id', description: 'ID của bài viết', type: Number })
+  @ApiResponse({ status: 200, description: 'Thành công.', type: Post })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy bài viết.' })
   async findOne(@ParseId('id') id: number) {
     const post = await this.postService.findPostById(id);
     return { data: post };
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuardUser)
   @Put(':id')
+  @ApiOperation({ summary: 'Cập nhật một bài viết' })
+  @ApiParam({ name: 'id', description: 'ID của bài viết cần cập nhật', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Cập nhật thành công.',
+    type: UpdatePostResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Chưa xác thực.' })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy bài viết.' })
   async update(
     @ParseId('id') id: number,
     @Body() updatePostDto: UpdatePostDto,
@@ -99,8 +148,18 @@ export class PostController {
     };
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuardUser)
   @Delete(':id')
+  @ApiOperation({ summary: 'Xóa một bài viết' })
+  @ApiParam({ name: 'id', description: 'ID của bài viết cần xóa', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Xóa thành công.',
+    type: SinglePostResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Chưa xác thực.' })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy bài viết.' })
   async remove(@ParseId('id') id: number, @I18n() i18n: I18nContext) {
     const post = await this.postService.remove(id, i18n.t('post.not_found'));
     return {
@@ -109,8 +168,13 @@ export class PostController {
     };
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuardUser)
   @Get('like/:id')
+  @ApiOperation({ summary: 'Like hoặc unlike một bài viết' })
+  @ApiParam({ name: 'id', description: 'ID của bài viết để like/unlike', type: Number })
+  @ApiResponse({ status: 200, description: 'Thành công.', type: LikePostResponseDto })
+  @ApiResponse({ status: 401, description: 'Chưa xác thực.' })
   async likePost(
     @User() user,
     @ParseId('id') id: number,

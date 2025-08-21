@@ -20,7 +20,7 @@ export class CommentService {
   async create(
     post_id: number,
     createCommentDto: CreateCommentDto,
-  ): Promise<Comment> {
+  ): Promise<Comment | null> {
     const { content, user_id } = createCommentDto;
 
     const comment = this.commentRepository.create({
@@ -29,7 +29,24 @@ export class CommentService {
       user: { id: user_id },
     });
 
-    return await this.commentRepository.save(comment);
+    await this.commentRepository.save(comment);
+
+    return await this.commentRepository.findOne({
+      where: { id: comment.id },
+      relations: ['user'],
+      select: {
+        id: true,
+        user: {
+          id: true,
+          email: true,
+          name: true,
+          avatar: true,
+        },
+        content: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
   }
 
   // Get one comment
@@ -39,12 +56,15 @@ export class CommentService {
       relations: ['user'],
       select: {
         id: true,
-        content: true,
-        created_at: true,
         user: {
           id: true,
+          email: true,
           name: true,
+          avatar: true,
         },
+        content: true,
+        created_at: true,
+        updated_at: true,
       },
       order: { created_at: 'DESC' },
     });
@@ -67,25 +87,28 @@ export class CommentService {
       relations: ['user'],
       select: {
         id: true,
-        content: true,
-        created_at: true,
         user: {
           id: true,
+          email: true,
           name: true,
+          avatar: true,
         },
+        content: true,
+        created_at: true,
+        updated_at: true,
       },
     });
 
     if (!comment) {
       throw new NotFoundException(i18n.t('comment.comment_not_found'));
     }
-    
+
     if (updateComment.user_id !== comment.user.id) {
       throw new BadRequestException(i18n.t('comment.cannot_update'));
     }
 
     const result = await this.commentRepository.update(id, {
-        content: updateComment.content,
+      content: updateComment.content,
     });
 
     if (result.affected === 0) {
@@ -106,12 +129,15 @@ export class CommentService {
       relations: ['user'],
       select: {
         id: true,
-        content: true,
-        created_at: true,
         user: {
           id: true,
+          email: true,
           name: true,
+          avatar: true,
         },
+        content: true,
+        created_at: true,
+        updated_at: true,
       },
     });
 

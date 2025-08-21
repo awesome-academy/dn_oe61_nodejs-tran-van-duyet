@@ -14,18 +14,22 @@ import { BudgetUser } from './BudgetUser.entity';
 import { CategoryUser } from './CategoryUser.entity';
 import { GoalUser } from './GoalUser.entity';
 import { Plan } from './Plan.entity'; 
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'users' })
 export class User {
+  @ApiProperty({ example: 1, description: 'User ID' })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ example: 'user@example.com', description: 'Email người dùng' })
   @Column({ type: 'varchar', unique: true, nullable: false })
   email: string;
 
   @Column({ type: 'text', nullable: false })
   encrypted_password: string;
 
+  @ApiProperty({ example: 'Nguyễn Văn A', description: 'Tên người dùng' })
   @Column({ type: 'varchar', nullable: true })
   name: string;
 
@@ -35,6 +39,7 @@ export class User {
   @Column({ type: 'text', nullable: true })
   description: string;
 
+  @ApiProperty({ example: 'https://example.com/avatar.jpg', description: 'URL ảnh đại diện' })
   @Column({ type: 'varchar', nullable: true })
   avatar: string;
 

@@ -18,7 +18,7 @@ export class RecurringService {
   async create(
     createRecurringDto: CreateRecurringDto,
     i18n: I18nContext,
-  ): Promise<RecurringTransaction> {
+  ): Promise<RecurringTransaction | null> {
     const transaction = await this.transactionRepository.findOne({
       where: { id: createRecurringDto.transaction_id },
     });
@@ -28,8 +28,13 @@ export class RecurringService {
     }
 
     const recurring = this.recurringRepository.create(createRecurringDto);
+    const saved = await this.recurringRepository.save(recurring);
 
-    return await this.recurringRepository.save(recurring);
+    // Lấy lại kèm quan hệ transaction
+    return await this.recurringRepository.findOne({
+      where: { id: saved.id },
+      relations: ['transaction'],
+    });
   }
 
   async findAllByUser(user_id: number): Promise<RecurringTransaction[]> {
@@ -76,7 +81,10 @@ export class RecurringService {
   }
 
   async remove(id: number, i18n: I18nContext): Promise<RecurringTransaction> {
-    const recurring = await this.recurringRepository.findOne({ where: { id } });
+    const recurring = await this.recurringRepository.findOne({
+      where: { id },
+      relations: ['transaction'],
+    });
 
     if (!recurring) {
       throw new NotFoundException(i18n.t('recurring.not_found'));
