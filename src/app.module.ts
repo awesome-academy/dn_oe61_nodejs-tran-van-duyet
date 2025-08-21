@@ -32,6 +32,7 @@ import { ProfileModule } from './module/profile/profile.module';
 import { RecurringModule } from './module/recurring/recurring.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { RevenueModule } from './module/revenue/revenue.module';
+import { CostModule } from './module/cost/cost.module';
 
 @Module({
   imports: [
@@ -115,6 +116,7 @@ import { RevenueModule } from './module/revenue/revenue.module';
     ProfileModule,
     RecurringModule,
     RevenueModule,
+    CostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
