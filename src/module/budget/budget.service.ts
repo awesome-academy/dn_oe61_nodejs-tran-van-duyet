@@ -10,12 +10,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Budget } from 'src/entities/Budget.entity';
 import { Not, Repository } from 'typeorm';
 import { I18n, I18nContext } from 'nestjs-i18n';
+import { BudgetUser } from 'src/entities/BudgetUser.entity';
 
 @Injectable()
 export class BudgetService {
   constructor(
     @InjectRepository(Budget)
     private readonly budgetRepository: Repository<Budget>,
+    @InjectRepository(BudgetUser)
+    private readonly budgetUsersRepository: Repository<BudgetUser>,
   ) {}
 
   async create(
@@ -120,6 +123,16 @@ export class BudgetService {
     updateBudgetDto: UpdateBudgetDto,
     @I18n() i18n: I18nContext,
   ) {
+    const user_budget = await this.budgetUsersRepository.findOne({where: {
+      user: { id: updateBudgetDto.updated_by },
+      budget: { id },
+    }})
+    console.log(user_budget);
+    
+    if (!user_budget) {
+      throw new NotFoundException(i18n.t('budget.not_update'));
+    }
+
     const budget = await this.budgetRepository.findOne({ where: { id } });
     if (!budget) {
       throw new NotFoundException(i18n.t('budget.budget_not_found'));

@@ -28,7 +28,7 @@ export class PlanController {
   @ApiResponse({ status: 200, description: 'Thành công.', type: PlanResponseDto })
   @ApiResponse({ status: 404, description: 'Không tìm thấy gói.' })
   async findOne(@ParseId('id') id: number, @I18n() i18n: I18nContext) {
-    const data = await this.planService.findOne(id);
+    const data = await this.planService.findOne(id, i18n);
     return {data: data};
   }
 }

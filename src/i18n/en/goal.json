@@ -11,5 +11,6 @@
   "rm_user_success": "User removed successfully",
   "rm_user_error": "You do not have permission for this action",
   "user_not_found": "User not found",
-  "goal_not_found": "Goal not found"
+  "goal_not_found": "Goal not found",
+  "not_update": "You do not belong to this goal"
 }

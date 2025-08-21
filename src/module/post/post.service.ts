@@ -67,6 +67,7 @@ export class PostService {
     user_id: number,
     page: number,
     limit: number,
+    i18n: I18nContext
   ): Promise<[Post[], number]> {
     const [result, total] = await this.postsRepository
       .createQueryBuilder('post')
@@ -86,13 +87,15 @@ export class PostService {
       .orderBy('post.id', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
-      .getManyAndCount();
-
+      .getManyAndCount();    
+    if (result.length === 0) {
+      throw new NotFoundException(i18n.t('post.not_found'));
+    }
     return [result, total];
   }
 
-  async findPostById(id: number): Promise<Post | null> {
-    return await this.postsRepository
+  async findPostById(id: number, i18n: I18nContext): Promise<Post | null> {
+    const post = await this.postsRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.user', 'user')
       .select([
@@ -108,6 +111,10 @@ export class PostService {
       ])
       .where('post.id = :id', { id })
       .getOne();
+    if (!post){
+      throw new NotFoundException(i18n.t('post.not_found'));
+    }
+    return post;
   }
 
   async update(
@@ -143,7 +150,7 @@ export class PostService {
           avatar: true,
         },
         created_at: true,
-        updated_at: true
+        updated_at: true,
       },
     });
     if (!post) {

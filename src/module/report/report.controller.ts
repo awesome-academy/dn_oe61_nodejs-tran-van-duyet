@@ -140,7 +140,7 @@ export class ReportController {
   }
 
   @UseGuards(JwtAuthGuardUser)
-  @Patch('user/:id')
+  @Patch(':id/user')
   @ApiOperation({ summary: 'Người dùng cập nhật nội dung feedback/report của mình' })
   @ApiParam({ name: 'id', description: 'ID của feedback/report' })
   @ApiResponse({ status: 200, description: 'Cập nhật feedback/report thành công.', type: updateReportResponseDto })

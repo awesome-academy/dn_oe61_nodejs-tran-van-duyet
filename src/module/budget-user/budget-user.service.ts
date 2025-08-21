@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { BudgetUser } from 'src/entities/BudgetUser.entity';
+import { User } from 'src/entities/User.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -9,9 +10,15 @@ export class BudgetUserService {
   constructor(
     @InjectRepository(BudgetUser)
     private readonly budgetUsersRepository: Repository<BudgetUser>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async create(budget_id: number, user_id: number, @I18n() i18n: I18nContext): Promise<BudgetUser> {
+    const user_exit = this.userRepository.findOne({ where: {id: user_id}});
+    if (!user_exit) {
+      throw new NotFoundException(i18n.t('user.user_not_found'));
+    }
     const exists = await this.budgetUsersRepository.findOne({
       where: {
         budget: { id: budget_id },

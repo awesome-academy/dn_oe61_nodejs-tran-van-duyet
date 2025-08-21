@@ -13,5 +13,6 @@
   "rm_user_success": " Xoá người dùng thành công",
   "rm_user_error": "Bạn không có quyền này",
   "budget_not_found": "Không tìm thấy hạn mức chi tiêu",
-  "budget_user_not_found": "Không có người dùng này trong ngân sách"
+  "budget_user_not_found": "Không có người dùng này trong ngân sách",
+  "not_update": "Bạn không thuộc vào ngân sách này"
 }

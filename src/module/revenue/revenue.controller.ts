@@ -1,7 +1,10 @@
-import { Controller, Get, Render, Query } from '@nestjs/common';
+import { Controller, Get, Render, Query, UseGuards } from '@nestjs/common';
 import { RevenueService } from './revenue.service';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { PLAN_COLORS, DEFAULT_COLOR } from '../../config/plan-colors';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
+@UseGuards(JwtAuthGuard)
 @Controller('revenue')
 export class RevenueController {
   constructor(private readonly revenueService: RevenueService) {}

@@ -65,6 +65,7 @@ export class BudgetController {
     const budget = await this.budgetService.create(createBudgetDto, i18n);
     await this.budgetUserService.create(+budget.id, +user.sub, i18n);
     return {
+      status: true,
       message: i18n.t('budget.create_success'),
       data: budget,
     };
@@ -80,15 +81,13 @@ export class BudgetController {
   @ApiResponse({ status: 409, description: 'Người dùng này đã có' })
   async addUser(@Body() body: addUserBudgetDto, @I18n() i18n: I18nContext) {
     const { budget_id, user_id } = body;
-    const budget_user = await this.budgetUserService.create(
-      budget_id,
-      user_id,
-      i18n,
-    );
+    await this.budgetUserService.create(budget_id, user_id, i18n);
 
+    const budget = await this.budgetService.findBudgetDetail(budget_id, i18n);
     return {
+      status: true,
       message: i18n.t('budget.add_success'),
-      data: budget_user,
+      data: budget,
     };
   }
 
@@ -158,12 +157,13 @@ export class BudgetController {
 
     const budget = await this.budgetService.update(+id, updateBudgetDto, i18n);
     return {
+      status: true,
       message: i18n.t('budget.update_success'),
       data: budget,
     };
   }
 
-  @Delete('out/:id')
+  @Delete(':id/out')
   @ApiOperation({ summary: 'Người dùng tự rời khỏi một ngân sách' })
   @ApiParam({ name: 'id', description: 'ID của ngân sách' })
   @ApiResponse({
@@ -181,18 +181,16 @@ export class BudgetController {
     if (isUserCreate) {
       throw new BadRequestException(i18n.t('budget.out_error'));
     }
-    const budget_user = await this.budgetUserService.remove(
-      id,
-      +user.sub,
-      i18n,
-    );
+    await this.budgetUserService.remove(id, +user.sub, i18n);
+    const budget = await this.budgetService.findBudgetDetail(id, i18n);
     return {
+      status: true,
       message: i18n.t('budget.out_success'),
-      data: budget_user,
+      data: budget,
     };
   }
 
-  @Post('out')
+  @Put('out/user')
   @ApiOperation({ summary: 'Người tạo xóa người dùng khác khỏi ngân sách' })
   @ApiResponse({
     status: 200,
@@ -211,14 +209,15 @@ export class BudgetController {
       +budget_id,
     );
     if (isUserCreator) {
-      const budget_user = await this.budgetUserService.remove(
+      await this.budgetUserService.remove(+budget_id, +user_id, i18n);
+      const budget = await this.budgetService.findBudgetDetail(
         +budget_id,
-        +user_id,
         i18n,
       );
       return {
+        status: true,
         message: i18n.t('budget.rm_user_success'),
-        data: budget_user,
+        data: budget,
       };
     }
     throw new BadRequestException(i18n.t('budget.rm_user_error'));
@@ -244,6 +243,7 @@ export class BudgetController {
     }
     const budget = await this.budgetService.remove(id);
     return {
+      status: true,
       message: i18n.t('budget.delete_success'),
       data: budget,
     };

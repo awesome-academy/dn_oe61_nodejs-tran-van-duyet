@@ -11,5 +11,6 @@
   "rm_user_success": " Xoá người dùng thành công",
   "rm_user_error": "Bạn không có quyền này",
   "user_not_found": "không tìm thấy người dùng",
-  "goal_not_found": "Không tìm thấy mục tiêu"
+  "goal_not_found": "Không tìm thấy mục tiêu",
+  "not_update": "Bạn không thuộc mục tiêu này"
 }

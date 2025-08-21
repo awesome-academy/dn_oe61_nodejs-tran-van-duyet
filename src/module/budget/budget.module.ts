@@ -6,10 +6,11 @@ import { Budget } from 'src/entities/Budget.entity';
 import { BudgetUserModule } from '../budget-user/budget-user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../auth/constants';
+import { BudgetUser } from 'src/entities/BudgetUser.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Budget]),
+    TypeOrmModule.forFeature([Budget, BudgetUser]),
     BudgetUserModule,
     JwtModule.register({
       secret: jwtConstants.secret,

@@ -13,5 +13,6 @@
   "rm_user_success": "User removed successfully",
   "rm_user_error": "You do not have permission for this action",
   "budget_not_found": "Budget not found",
-  "budget_user_not_found": "This user is not in the budget"
+  "budget_user_not_found": "This user is not in the budget",
+  "not_update": "You do not belong to this budget"
 }
