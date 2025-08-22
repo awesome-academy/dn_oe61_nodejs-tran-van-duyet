@@ -92,6 +92,7 @@ export class PostController {
     @User() user,
     @Query('page') page = 1,
     @Query('limit') limit = 10,
+    @I18n() i18n: I18nContext
   ) {
     const pageNumber = Math.max(1, Number(page));
     const pageSize = Math.max(1, Number(limit));
@@ -99,6 +100,7 @@ export class PostController {
       +user.sub,
       pageNumber,
       pageSize,
+      i18n
     );
     const totalPages = Math.ceil(total / pageSize);
 
@@ -115,8 +117,8 @@ export class PostController {
   @ApiParam({ name: 'id', description: 'ID của bài viết', type: Number })
   @ApiResponse({ status: 200, description: 'Thành công.', type: Post })
   @ApiResponse({ status: 404, description: 'Không tìm thấy bài viết.' })
-  async findOne(@ParseId('id') id: number) {
-    const post = await this.postService.findPostById(id);
+  async findOne(@ParseId('id') id: number,@I18n() i18n: I18nContext) {
+    const post = await this.postService.findPostById(id, i18n);
     return { data: post };
   }
 
@@ -170,9 +172,9 @@ export class PostController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuardUser)
-  @Get('like/:id')
-  @ApiOperation({ summary: 'Like hoặc unlike một bài viết' })
-  @ApiParam({ name: 'id', description: 'ID của bài viết để like/unlike', type: Number })
+  @PostMethod(':id/like')
+  @ApiOperation({ summary: 'Like một bài viết' })
+  @ApiParam({ name: 'id', description: 'ID của bài viết để like', type: Number })
   @ApiResponse({ status: 200, description: 'Thành công.', type: LikePostResponseDto })
   @ApiResponse({ status: 401, description: 'Chưa xác thực.' })
   async likePost(
@@ -182,6 +184,34 @@ export class PostController {
   ) {
     const existingLike = await this.likeService.hasUserLikedPost(id, +user.sub);
     if (existingLike) {
+      return {
+        status: false,
+        message: i18n.t('like.like_exit'),
+      };
+    }
+    const like = await this.likeService.like(id, +user.sub, i18n);
+    return {
+      status: true,
+      message: i18n.t('like.like_success'),
+      data: like,
+    };
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuardUser)
+  @Delete(':id/unlike')
+  @ApiOperation({ summary: 'Unlike một bài viết' })
+  @ApiParam({ name: 'id', description: 'ID của bài viết để unlike', type: Number })
+  @ApiResponse({ status: 200, description: 'Thành công.', type: LikePostResponseDto })
+  @ApiResponse({ status: 401, description: 'Chưa xác thực.' })
+  async unLikePost(
+    @User() user,
+    @ParseId('id') id: number,
+    @I18n() i18n: I18nContext,
+  ) {
+    console.log(id);
+    const existingLike = await this.likeService.hasUserLikedPost(id, +user.sub);
+    if (existingLike) {
       const unlike = await this.likeService.unLike(id, +user.sub, i18n);
       return {
         status: true,
@@ -189,11 +219,9 @@ export class PostController {
         data: unlike,
       };
     }
-    const like = await this.likeService.like(id, +user.sub);
     return {
-      status: true,
-      message: i18n.t('like.like_success'),
-      data: like,
+      status: false,
+      message: i18n.t('like.like_not_found'),
     };
   }
 }

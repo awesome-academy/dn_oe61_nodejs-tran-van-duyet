@@ -128,7 +128,7 @@ export class AuthController {
         sameSite: 'lax', // GReducing CSRF Risk
         // secure: true,             // Enable if you use HTTPS
       });
-      return res.status(200).json({ message: t.messageLogin });
+      return res.status(200).json({ message: t.messageLogin, token_user: jwt });
     } else {
       return res.status(401).json({ message: t.check_activate });
     }
@@ -172,13 +172,14 @@ export class AuthController {
     );
     if (existingUser) {
       return {
+        status: false,
         message: t.Check_email,
       };
     }
-    const user = await this.usersService.register(CreateUserDto);
+    await this.usersService.register(CreateUserDto);
     return {
+      status: true,
       message: t.REGISTER_SUCCESS,
-      userId: user.id,
     };
   }
 
@@ -190,10 +191,10 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Token không hợp lệ.' })
   async activate(@Body() body, @I18n() i18n: I18nContext) {
     const t = i18n.t('auth') as any;
-    const user = await this.usersService.activateAccount(body.token);
+    await this.usersService.activateAccount(body.token);
     return {
+      status: true,
       message: t.activated,
-      user,
     };
   }
 
@@ -216,7 +217,8 @@ export class AuthController {
     });
     return res.status(200).json({ 
       status: true,
-      message: i18n.t('auth.messageLogin') 
+      message: i18n.t('auth.messageLogin'),
+      token_user: jwt 
     });
   }
 }

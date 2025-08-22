@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Post } from 'src/entities/Post.entity';
+import { User } from 'src/entities/User.entity';
 
 export class SinglePostResponseDto {
   @ApiProperty({ example: 'Tạo bài viết thành công' })
@@ -47,10 +48,10 @@ class LikePostDataDto {
   @ApiProperty({ example: 3 })
   id: number;
 
-  @ApiProperty({ type: () => LikePostUserDto })
+  @ApiProperty({ type: () => User })
   user: LikePostUserDto;
 
-  @ApiProperty({ type: () => LikePostPostDto })
+  @ApiProperty({ type: () => Post })
   post: LikePostPostDto;
 
   @ApiProperty({ example: '2025-08-20T15:48:31.568Z' })

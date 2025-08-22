@@ -33,6 +33,9 @@ class GoalDataDto {
 }
 
 export class createGoalResponseDto {
+  @ApiProperty({ example: true })
+  status: boolean;
+  
   @ApiProperty({ example: 'Tạo mục tiêu thành công.' })
   message: string;
 
@@ -46,6 +49,9 @@ export class getGoalResponseDto {
 }
 
 export class updateGoalResponseDto {
+  @ApiProperty({ example: true })
+  status: boolean;
+  
   @ApiProperty({ example: 'Cập nhật mục tiêu thành công' })
   message: string;
 
@@ -54,6 +60,9 @@ export class updateGoalResponseDto {
 }
 
 export class deleteGoalResponseDto {
+  @ApiProperty({ example: true })
+  status: boolean;
+
   @ApiProperty({ example: 'Xoá mục tiêu thành công' })
   message: string;
 
@@ -62,19 +71,25 @@ export class deleteGoalResponseDto {
 }
 
 export class outGoalResponseDto {
+  @ApiProperty({ example: true })
+  status: boolean;
+  
   @ApiProperty({ example: 'Rời khỏi thành công' })
   message: string;
 
-  @ApiProperty({ example: {id: 4} })
-  data: {id: number};
+  @ApiProperty({ type: [GoalSummaryDto] })
+  data: GoalSummaryDto[];
 }
 
 export class outUserGoalResponseDto {
+  @ApiProperty({ example: true })
+  status: boolean;
+  
   @ApiProperty({ example: 'Xoá người dùng thành công' })
   message: string;
 
-  @ApiProperty({ example: {id: 4} })
-  data: {id: number};
+  @ApiProperty({ type: [GoalSummaryDto] })
+  data: GoalSummaryDto[];
 }
 
 export class GoalListResponseDto {
@@ -83,6 +98,9 @@ export class GoalListResponseDto {
 }
 
 export class GoalUserResponseDto {
+  @ApiProperty({ example: true })
+  status: boolean;
+
   @ApiProperty({ example: 'Thêm người dùng vào mục tiêu thành công' })
   message: string;
 

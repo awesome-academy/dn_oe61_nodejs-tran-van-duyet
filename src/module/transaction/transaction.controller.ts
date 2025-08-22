@@ -123,6 +123,7 @@ export class TransactionController {
       i18n,
     );
     return {
+      status: true,
       message: i18n.t('transaction.update_success'),
       data: transaction,
     };
@@ -140,6 +141,7 @@ export class TransactionController {
   async remove(@ParseId('id') id: number, @I18n() i18n: I18nContext) {
     const transaction = await this.transactionService.remove(id, i18n);
     return {
+      status: true,
       message: i18n.t('transaction.delete_success'),
       data: transaction,
     };

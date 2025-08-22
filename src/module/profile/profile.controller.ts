@@ -57,6 +57,10 @@ export class ProfileController {
     @User() user,
     @I18n() i18n: I18nContext,
   ) {
-    return await this.profileService.changePassword(+user.sub,changePasswordDto,i18n);
+    const message = await this.profileService.changePassword(+user.sub,changePasswordDto,i18n);
+    return {
+      status: true,
+      message: message
+    }
   }
 }

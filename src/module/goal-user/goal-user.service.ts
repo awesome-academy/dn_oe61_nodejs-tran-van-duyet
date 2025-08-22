@@ -4,7 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { I18nContext } from 'nestjs-i18n';
 import { GoalUser } from 'src/entities/GoalUser.entity';
+import { User } from 'src/entities/User.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -12,13 +14,19 @@ export class GoalUserService {
   constructor(
     @InjectRepository(GoalUser)
     private readonly goalUserRepository: Repository<GoalUser>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async create(
     goal_id: number,
     user_id: number,
-    message: string,
+    i18n: I18nContext,
   ): Promise<GoalUser | null> {
+    const user_exit = this.userRepository.findOne({ where: {id: user_id}});
+    if (!user_exit) {
+      throw new NotFoundException(i18n.t('user.user_not_found'));
+    }
     const exists = await this.goalUserRepository.findOne({
       where: {
         goal: { id: goal_id },
@@ -27,7 +35,7 @@ export class GoalUserService {
     });
 
     if (exists) {
-      throw new ConflictException(message);
+      throw new ConflictException(i18n.t('goal.add_error'));
     }
 
     const goal_user = await this.goalUserRepository.create({

@@ -25,6 +25,8 @@ export class PaginatedTransactionsResponseDto {
 
 // --- DTO for Update ---
 export class UpdateTransactionResponseDto {
+    @ApiProperty({ example: true })
+    status: boolean;
     @ApiProperty({ example: 'Cập nhật thành công' })
     message: string;
     @ApiProperty({ type: Transaction })
@@ -33,6 +35,8 @@ export class UpdateTransactionResponseDto {
 
 // --- DTO for Delete ---
 export class DeleteTransactionResponseDto {
+    @ApiProperty({ example: true })
+    status: boolean;
     @ApiProperty({ example: 'Xoá thành công' })
     message: string;
     @ApiProperty({ type: Transaction })

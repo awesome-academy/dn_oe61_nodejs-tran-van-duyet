@@ -39,6 +39,9 @@ export class UpdateProfileResponseDto {
 
 // --- DTO for POST /profile (change password) ---
 export class ChangePasswordResponseDto {
+    @ApiProperty({ example: true })
+    status: boolean;
+    
     @ApiProperty({ example: 'Đổi mật khẩu thành công' })
     message: string;
 }
